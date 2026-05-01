@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neo-Retro Kit — Framer Components</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1A1325;
+    --paper: #F5EEE1;
+    --primary: #E8231A;
+    --secondary: #2E7AFF;
+    --accent: #FFD63A;
+    --support: #1F7A4C;
+    --neutral: #E0D6C3;
+    --border: 2px solid #1A1325;
+    --shadow-sm: 4px 4px 0 #1A1325;
+    --shadow-md: 6px 6px 0 #1A1325;
+    --shadow-lg: 8px 8px 0 #1A1325;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: var(--border);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .btn:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow-md); }
+  .btn:active { transform: translate(0, 0); box-shadow: none; }
+
+  .btn-primary { background: var(--primary); color: var(--paper); box-shadow: var(--shadow-sm); }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ink { background: var(--ink); color: var(--paper); box-shadow: var(--shadow-sm); }
+  .btn-lg { padding: 16px 36px; font-size: 16px; }
+
+  /* ── TAG ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border: var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 88vh;
+  }
+
+  .hero-left {
+    padding: 80px 48px;
+    border-right: var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+
+  .hero-headline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(56px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    color: var(--primary);
+  }
+
+  .hero-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .hero-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+    opacity: 0.7;
+    max-width: 420px;
+  }
+
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .hero-right {
+    background: var(--ink);
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-right-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--neutral);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: rgba(224,214,195,0.1);
+    border: 1px solid rgba(224,214,195,0.15);
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(224,214,195,0.1);
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+
+  .stat-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 40px;
+    letter-spacing: -0.03em;
+    color: var(--paper);
+  }
+
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--neutral);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.6;
+  }
+
+  .hero-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(224,214,195,0.15);
+    flex: 1;
+    margin: 32px 0;
+  }
+
+  .preview-cell {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 100px;
+  }
+
+  .preview-cell-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .preview-dot {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    border-bottom: var(--border);
+    background: var(--ink);
+    padding: 16px 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 0 32px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ticker-sep {
+    width: 4px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  .section { padding: 96px 48px; border-bottom: var(--border); }
+  .section-sm { padding: 64px 48px; border-bottom: var(--border); }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--neutral);
+  }
+
+  .section-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(36px, 4vw, 56px);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 48px;
+  }
+
+  /* ── CATEGORY SECTION ── */
+  .category-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    padding-bottom: 48px;
+    border-bottom: var(--border);
+    margin-bottom: 48px;
+  }
+
+  .category-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.65;
+    max-width: 380px;
+    align-self: end;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: var(--border);
+    border-left: var(--border);
+  }
+
+  .category-cell {
+    border-right: var(--border);
+    border-bottom: var(--border);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .category-cell:hover { background: var(--neutral); }
+
+  .category-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+  }
+
+  .category-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+
+  .category-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-top: auto;
+    padding-top: 12px;
+  }
+
+  .category-arrow {
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    margin-left: auto;
+  }
+
+  .category-cell:hover .category-arrow { opacity: 1; }
+
+  /* ── COMPONENT CARDS ── */
+  .components-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .comp-card {
+    border: var(--border);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.12s, box-shadow 0.12s;
+  }
+
+  .comp-card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .comp-preview {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .comp-preview-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .comp-preview-bar {
+    height: 3px;
+    border-radius: 0;
+  }
+
+  .comp-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+
+  .comp-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .comp-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.45;
+  }
+
+  .comp-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .comp-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--neutral);
+  }
+
+  .comp-price {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+
+  .comp-link {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+  }
+
+  .comp-card:hover .comp-link { opacity: 1; }
+
+  /* ── WHY SECTION ── */
+  .why-section {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid rgba(224,214,195,0.15);
+    border-left: 1px solid rgba(224,214,195,0.15);
+    margin-top: 48px;
+  }
+
+  .why-cell {
+    border-right: 1px solid rgba(224,214,195,0.15);
+    border-bottom: 1px solid rgba(224,214,195,0.15);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .why-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    opacity: 0.12;
+  }
+
+  .why-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+  }
+
+  .why-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--neutral);
+    opacity: 0.75;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    padding: 120px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg-text {
+    position: absolute;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(80px, 14vw, 180px);
+    letter-spacing: -0.04em;
+    color: var(--neutral);
+    opacity: 0.25;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .cta-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 700px;
+  }
+
+  .cta-title em { font-style: normal; color: var(--primary); }
+
+  .cta-sub {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    opacity: 0.6;
+    max-width: 460px;
+  }
+
+  .cta-buttons { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; justify-content: center; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--ink);
+    padding: 64px 48px 40px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(224,214,195,0.1);
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+
+  .footer-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--neutral);
+    opacity: 0.5;
+    max-width: 240px;
+  }
+
+  .footer-col-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--neutral);
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+
+  .footer-links a:hover { opacity: 1; }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--neutral);
+    opacity: 0.3;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-wordmark {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 48px;
+    color: var(--paper);
+    opacity: 0.04;
+    letter-spacing: -0.03em;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    NEO-RETRO
+    <span class="tag" style="background:var(--primary);color:var(--paper);border-color:var(--primary);font-size:10px;">KIT</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#categories">Components</a></li>
+    <li><a href="#featured">Featured</a></li>
+    <li><a href="#why">About</a></li>
+    <li><a href="#cta">Pricing</a></li>
+  </ul>
+  <a href="#cta" class="btn btn-primary">Get the Kit →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <span class="tag" style="background:var(--accent);">Framer Marketplace</span>
+      <span class="tag" style="background:transparent;">2026</span>
+    </div>
+
+    <h1 class="hero-headline">
+      BUILD<br>
+      <em>BOLD.</em><br>
+      SHIP<br>
+      FAST.
+    </h1>
+
+    <div class="hero-bottom">
+      <p class="hero-desc">
+        Production-ready Framer components built on the Fashion Editorial
+        Neo-Retro system. Hard shadows, bold type, zero blur — drop in and ship.
+      </p>
+      <div class="hero-ctas">
+        <a href="#categories" class="btn btn-primary btn-lg">Browse Components →</a>
+        <a href="#featured" class="btn btn-ghost btn-lg">Live Preview</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-label">neo-retro-kit / preview</div>
+
+    <div class="hero-preview-grid">
+      <div class="preview-cell" style="background:rgba(232,35,26,0.15);">
+        <div class="preview-dot" style="background:var(--primary);box-shadow:var(--shadow-sm);"></div>
+        <span class="preview-cell-label" style="color:var(--paper);font-size:12px;">Button Kit</span>
+      </div>
+      <div class="preview-cell" style="background:rgba(255,214,58,0.12);">
+        <div class="preview-dot" style="background:var(--accent);box-shadow:4px 4px 0 rgba(255,255,255,0.2);"></div>
+        <span class="preview-cell-label" style="color:var(--paper);font-size:12px;">Card System</span>
+      </div>
+      <div class="preview-cell" style="background:rgba(46,122,255,0.15);">
+        <div class="preview-dot" style="background:var(--secondary);box-shadow:var(--shadow-sm);"></div>
+        <span class="preview-cell-label" style="color:var(--paper);font-size:12px;">Nav Bars</span>
+      </div>
+      <div class="preview-cell" style="background:rgba(31,122,76,0.15);">
+        <div class="preview-dot" style="background:var(--support);box-shadow:var(--shadow-sm);"></div>
+        <span class="preview-cell-label" style="color:var(--paper);font-size:12px;">Ticker Strip</span>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-row">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">Components</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-num">8</span>
+        <span class="stat-label">Categories</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-num" style="color:var(--accent);">★ 5.0</span>
+        <span class="stat-label">Rating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <!-- repeated for infinite loop -->
+    <script>
+      const items = ['Navigation','Hero Sections','Cards','Buttons & Tags','Marquee / Ticker','Testimonials','Pricing Tables','Stat Counters','Form Elements','Footer'];
+      const html = [...items,...items,...items].map(i=>`<span class="ticker-item" style="color:var(--paper)">${i}<span class="ticker-sep"></span></span>`).join('');
+      document.currentScript.insertAdjacentHTML('beforebegin', html);
+    </script>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="section-eyebrow">
+    <span class="tag" style="background:var(--accent);">01 — Categories</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="category-header">
+    <h2 class="section-title" style="margin:0;">EVERYTHING<br>YOU NEED.</h2>
+    <p class="category-desc">8 component categories, 40+ pieces — all built on one Neo-Retro visual language. Mix and match, they always belong together.</p>
+  </div>
+  <div class="category-grid">
+    <div class="category-cell"><span class="category-num">01</span><span class="category-name">Navigation</span><span class="category-count">6 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">02</span><span class="category-name">Hero Sections</span><span class="category-count">5 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">03</span><span class="category-name">Cards</span><span class="category-count">8 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">04</span><span class="category-name">Buttons & Tags</span><span class="category-count">7 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">05</span><span class="category-name">Marquee / Ticker</span><span class="category-count">4 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">06</span><span class="category-name">Testimonials</span><span class="category-count">5 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">07</span><span class="category-name">Pricing Tables</span><span class="category-count">3 components<span class="category-arrow">→</span></span></div>
+    <div class="category-cell"><span class="category-num">08</span><span class="category-name">Stats & Counters</span><span class="category-count">4 components<span class="category-arrow">→</span></span></div>
+  </div>
+</section>
+
+<!-- FEATURED COMPONENTS -->
+<section class="section" style="background:var(--neutral);" id="featured">
+  <div class="section-eyebrow">
+    <span class="tag">02 — Featured</span>
+    <div class="section-line"></div>
+  </div>
+  <h2 class="section-title">HAND-CRAFTED.<br>PIXEL-PERFECT.</h2>
+  <div class="components-grid">
+
+    <div class="comp-card">
+      <div class="comp-preview" style="background:var(--paper);">
+        <div class="comp-preview-inner">
+          <div style="padding:10px 20px;background:var(--primary);border:var(--border);box-shadow:var(--shadow-sm);color:var(--paper);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;">Get Started →</div>
+          <div style="padding:10px 20px;border:var(--border);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;">Preview</div>
+        </div>
+        <span class="comp-badge tag" style="background:var(--primary);color:var(--paper);border-color:var(--primary);">Bestseller</span>
+      </div>
+      <div class="comp-info">
+        <span class="comp-category">Buttons</span>
+        <span class="comp-name">Hard Button Kit</span>
+        <div class="comp-footer">
+          <span class="comp-price">Free</span>
+          <span class="comp-link">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card" style="background:var(--ink);">
+      <div class="comp-preview" style="background:var(--ink);border-bottom-color:rgba(224,214,195,0.2);">
+        <div class="comp-preview-inner">
+          <div style="width:180px;padding:16px;background:rgba(255,214,58,0.08);border:1px solid rgba(224,214,195,0.2);">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">Article</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:var(--paper);letter-spacing:-0.01em;">Editorial Card</div>
+          </div>
+        </div>
+        <span class="comp-badge tag" style="background:var(--accent);border-color:var(--accent);">New</span>
+      </div>
+      <div class="comp-info" style="color:var(--paper);">
+        <span class="comp-category" style="color:var(--neutral);">Cards</span>
+        <span class="comp-name">Outlined Article Card</span>
+        <div class="comp-footer" style="border-top-color:rgba(224,214,195,0.15);">
+          <span class="comp-price">Free</span>
+          <span class="comp-link" style="color:var(--accent);">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview" style="background:var(--secondary);">
+        <div style="font-family:'Archivo Black',sans-serif;font-size:28px;color:var(--paper);letter-spacing:-0.02em;line-height:1;">EDITORIAL<br>HERO</div>
+        <span class="comp-badge tag" style="background:var(--paper);border-color:var(--ink);">Featured</span>
+      </div>
+      <div class="comp-info">
+        <span class="comp-category">Hero Sections</span>
+        <span class="comp-name">Editorial Hero Block</span>
+        <div class="comp-footer">
+          <span class="comp-price">Free</span>
+          <span class="comp-link">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card" style="background:var(--ink);">
+      <div class="comp-preview" style="background:var(--ink);border-bottom-color:rgba(224,214,195,0.2);overflow:hidden;">
+        <div style="display:flex;gap:24px;font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:0.06em;color:var(--paper);white-space:nowrap;animation:ticker 6s linear infinite;text-transform:uppercase;">
+          <span>Marquee Strip ✦</span><span style="color:var(--accent);">Ticker ✦</span><span style="color:var(--primary);">Marquee Strip ✦</span><span style="color:var(--accent);">Ticker ✦</span>
+        </div>
+        <span class="comp-badge tag" style="background:var(--support);color:var(--paper);border-color:var(--support);">Popular</span>
+      </div>
+      <div class="comp-info" style="color:var(--paper);">
+        <span class="comp-category" style="color:var(--neutral);">Marquee</span>
+        <span class="comp-name">Retro Ticker Strip</span>
+        <div class="comp-footer" style="border-top-color:rgba(224,214,195,0.15);">
+          <span class="comp-price">Free</span>
+          <span class="comp-link" style="color:var(--support);">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card">
+      <div class="comp-preview" style="background:var(--paper);">
+        <div style="display:flex;gap:32px;align-items:center;">
+          <div style="text-align:center;">
+            <div style="font-family:'Archivo Black',sans-serif;font-size:36px;color:var(--ink);letter-spacing:-0.03em;">1,400+</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;">Users</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-family:'Archivo Black',sans-serif;font-size:36px;color:var(--primary);letter-spacing:-0.03em;">★5.0</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;">Rating</div>
+          </div>
+        </div>
+        <span class="comp-badge tag" style="background:var(--accent);">New</span>
+      </div>
+      <div class="comp-info">
+        <span class="comp-category">Stats</span>
+        <span class="comp-name">Stat Counter Block</span>
+        <div class="comp-footer">
+          <span class="comp-price">Free</span>
+          <span class="comp-link">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="comp-card" style="background:var(--ink);">
+      <div class="comp-preview" style="background:var(--ink);border-bottom-color:rgba(224,214,195,0.2);">
+        <div style="width:85%;padding:14px 20px;background:var(--ink);border-bottom:1px solid rgba(224,214,195,0.15);display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-family:'Archivo Black',sans-serif;font-size:14px;color:var(--paper);">LOGO</span>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--paper);padding:6px 14px;border:1px solid rgba(224,214,195,0.3);">Menu</span>
+        </div>
+        <span class="comp-badge tag" style="background:var(--primary);color:var(--paper);border-color:var(--primary);">Essential</span>
+      </div>
+      <div class="comp-info" style="color:var(--paper);">
+        <span class="comp-category" style="color:var(--neutral);">Navigation</span>
+        <span class="comp-name">Sticky Nav Bar</span>
+        <div class="comp-footer" style="border-top-color:rgba(224,214,195,0.15);">
+          <span class="comp-price">Free</span>
+          <span class="comp-link" style="color:var(--primary);">Preview →</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY SECTION -->
+<section class="section why-section" id="why">
+  <div class="section-eyebrow">
+    <span class="tag" style="background:var(--accent);border-color:var(--accent);">03 — Why This Kit</span>
+    <div class="section-line" style="background:rgba(224,214,195,0.15);"></div>
+  </div>
+  <h2 class="section-title" style="color:var(--paper);">DESIGNED WITH<br><span style="color:var(--primary);">INTENTION.</span></h2>
+  <div class="why-grid">
+    <div class="why-cell">
+      <div class="why-num">01</div>
+      <h3 class="why-title">Hard-Shadow System</h3>
+      <p class="why-body">Every component uses blur-0 hard offset shadows. No soft glow, no glassmorphism — just raw, tactile depth.</p>
+    </div>
+    <div class="why-cell">
+      <div class="why-num">02</div>
+      <h3 class="why-title">Customizable Variables</h3>
+      <p class="why-body">Color, text, image, and toggle variables exposed per component — buyers never need to dig into layers.</p>
+    </div>
+    <div class="why-cell" style="border-bottom:none;">
+      <div class="why-num">03</div>
+      <h3 class="why-title">Framer-Native</h3>
+      <p class="why-body">Built entirely in Framer with Google Fonts only. No custom font uploads, no policy violations.</p>
+    </div>
+    <div class="why-cell" style="border-bottom:none;">
+      <div class="why-num">04</div>
+      <h3 class="why-title">One Cohesive System</h3>
+      <p class="why-body">8 categories, one visual language. Mix and match any component — they always look like they belong.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-bg-text">NEO-RETRO</div>
+  <div class="cta-content">
+    <span class="tag" style="background:var(--primary);color:var(--paper);">04 — Get the Kit</span>
+    <h2 class="cta-title">START BUILDING<br><em>TODAY.</em></h2>
+    <p class="cta-sub">40+ Neo-Retro components. One purchase, lifetime updates. Drop in, customize, ship.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-ink btn-lg" style="box-shadow:var(--shadow-lg);">Get the Full Kit →</a>
+      <a href="#featured" class="btn btn-ghost btn-lg">Browse Free First</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="footer-logo">NEO-RETRO KIT</span>
+      <p class="footer-tagline">Fashion Editorial Neo-Retro components for Framer Marketplace. Bold, cohesive, zero-blur.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Components</div>
+      <ul class="footer-links">
+        <li><a href="#">Navigation</a></li>
+        <li><a href="#">Hero Sections</a></li>
+        <li><a href="#">Cards</a></li>
+        <li><a href="#">Buttons</a></li>
+        <li><a href="#">Marquee</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">More</div>
+      <ul class="footer-links">
+        <li><a href="#">Testimonials</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Stats</a></li>
+        <li><a href="#">Footer</a></li>
+        <li><a href="#">Forms</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Info</div>
+      <ul class="footer-links">
+        <li><a href="#">Framer Marketplace</a></li>
+        <li><a href="#">Preview Site</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Neo-Retro Kit — Framer Marketplace</span>
+    <span class="footer-wordmark">NEO-RETRO</span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,9 +1,11 @@
 /* ============================================================
-   GOYO — full-year planner generator  (roadmap 4 + 12 months + 365 days)
+   GOYO — full-year planner generator  (undated / perpetual)
    Builds the real product: cover, year-at-a-glance, 12 monthly
-   calendars, every day of the year (365), per-month habit pages,
-   a weekly reflection, a gratitude log, and notes — all wired with
-   internal #anchors:
+   pages, every day of the year (366 incl. Feb 29 so it works in
+   leap years too), per-month habit pages, a weekly reflection, a
+   gratitude log, and notes. No year and no weekday are printed —
+   it is undated, reuse it every year. All wired with internal
+   #anchors:
      • month rail (JAN–DEC) → the 12 monthly pages, everywhere
      • year-at-a-glance     → each month
      • monthly calendar day → that day's page
@@ -21,8 +23,6 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
-const YEAR = Number(process.env.GOYO_YEAR) || 2026;
-
 const tokens    = read('css/tokens.css');
 const base      = read('css/base.css');
 const medallion = read('js/medallion.js');
@@ -33,14 +33,12 @@ const fonts = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
 /* lift the procedural cover markup straight from the design sample */
 const coverInner = sliceClass(html, 'cover');
 
-/* ---- date helpers ---- */
+/* ---- month data (undated / perpetual — Feb has 29 for leap years) ---- */
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MON3 = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-const DOW_SUN = ['S','M','T','W','T','F','S'];
+const MLEN = [31,29,31,30,31,30,31,31,30,31,30,31];
 const p2 = (n) => String(n).padStart(2, '0');
-const dim = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();        // m is 1-based
-const monIdx = (y, m, d) => (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7; // 0=Mon
-const sunIdx = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).getUTCDay();           // 0=Sun
+const dim = (m) => MLEN[m - 1];                                        // days in month, 1-based
 
 /* ---- ids ---- */
 const mId = (m) => `p-m${p2(m)}`;
@@ -67,35 +65,34 @@ const page = (id, inner) => `<div class="page" id="${id}">${inner}</div>`;
 
 /* ---- pages ---- */
 function coverPage() {
-  return page('p-cover', coverInner.replace('undated · reuse every year', `${YEAR} · a year of stillness`));
+  return page('p-cover', coverInner);
 }
 
 function yearPage() {
   const cards = MONTHS.map((name, i) => {
-    const m = i + 1, lead = monIdx(YEAR, m, 1), n = dim(YEAR, m);
-    let cells = ['M','T','W','T','F','S','S'].map((w) => `<b>${w}</b>`).join('');
-    for (let k = 0; k < lead; k++) cells += `<i class="dim">·</i>`;
+    const m = i + 1, n = dim(m);
+    let cells = '';
     for (let d = 1; d <= n; d++) cells += `<i>${d}</i>`;
     return `<a href="#${mId(m)}"><div class="ym">${name}</div><div class="yg">${cells}</div></a>`;
   }).join('');
   const inner = `${tabs('p-year')}${rail()}<div class="content">${SEAL}
-    <div class="phead"><div><div class="eyebrow">The year</div><h1 class="h1">${YEAR}</h1></div>
-      <div class="pmeta">TAP A MONTH<br>TO BEGIN</div></div>
+    <div class="phead"><div><div class="eyebrow">At a glance</div><h1 class="h1">Your <em>year</em></h1></div>
+      <div class="pmeta">YEAR 20＿＿<br>TAP A MONTH TO BEGIN</div></div>
     <div class="yag">${cards}</div></div>`;
   return page('p-year', inner);
 }
 
 function monthlyPage(m) {
-  const lead = monIdx(YEAR, m, 1), n = dim(YEAR, m);
-  let cal = ['MON','TUE','WED','THU','FRI','SAT','SUN'].map((w) => `<div class="dw">${w}</div>`).join('');
-  const cells = Math.ceil((lead + n) / 7) * 7;
-  let day = 1;
+  const n = dim(m);
+  let cal = '';
+  const cells = Math.ceil(n / 7) * 7;
   for (let i = 0; i < cells; i++) {
-    if (i < lead || day > n) cal += `<div class="cell dim"></div>`;
-    else { cal += `<a class="cell" href="#${dId(m, day)}">${day}</a>`; day++; }
+    const day = i + 1;
+    if (day > n) cal += `<div class="cell dim"></div>`;
+    else cal += `<a class="cell" href="#${dId(m, day)}">${day}</a>`;
   }
   const inner = `${tabs(mId(m), m)}${rail(m)}<div class="content">${SEAL}
-    <div class="phead"><div><div class="eyebrow"><a class="rm" href="#p-year">‹ ${YEAR}</a> · Month ${p2(m)} / 12</div>
+    <div class="phead"><div><div class="eyebrow"><a class="rm" href="#p-year">‹ Year</a> · Month ${p2(m)} / 12</div>
       <h1 class="h1">${MONTHS[m - 1]}</h1></div>
       <div class="pmeta">INTENTION ____________<br>FOCUS ____________</div></div>
     <div class="hr pink spaced"></div>
@@ -108,10 +105,9 @@ function monthlyPage(m) {
 }
 
 function dailyPage(m, d) {
-  const n = dim(YEAR, m);
+  const n = dim(m);
   let strip = '';
   for (let i = 1; i <= n; i++) strip += `<a class="${i === d ? 'on' : ''}" href="#${dId(m, i)}">${i}</a>`;
-  const dow = DOW_SUN.map((x, i) => `<b${i === sunIdx(YEAR, m, d) ? ' class="on"' : ''}>${x}</b>`).join('');
   const wx = `<div class="wxr">
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.5 5.5l1.4 1.4M17 17l1.5 1.5M18.5 5.5L17 7M7 17l-1.5 1.5" stroke-linecap="round"/></svg>
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 18H7z" stroke-linejoin="round"/></svg>
@@ -137,8 +133,7 @@ function dailyPage(m, d) {
     <div class="box" style="flex:1;min-height:96px;border-color:var(--accent2-line);background:var(--accent2-fill)"></div></div>`;
   const inner = `${tabs('', m)}${rail(m)}<div class="content">
     <div class="dtop"><a class="dnum" href="#${mId(m)}">${p2(d)}</a><div class="dstrip">${strip}</div></div>
-    <div class="dsub"><a class="mo" href="#${mId(m)}" style="text-decoration:none">${MONTHS[m - 1]}</a>
-      <div class="dowp">${dow}</div></div>
+    <div class="dsub"><a class="mo" href="#${mId(m)}" style="text-decoration:none">${MONTHS[m - 1]}</a></div>
     <div class="dcols">${left}<div class="dcol-r"><div class="journal"></div></div></div></div>`;
   return page(dId(m, d), inner);
 }
@@ -195,7 +190,7 @@ function buildPages() {
   const out = [coverPage(), yearPage()];
   for (let m = 1; m <= 12; m++) {
     out.push(monthlyPage(m));
-    for (let d = 1; d <= dim(YEAR, m); d++) out.push(dailyPage(m, d));
+    for (let d = 1; d <= dim(m); d++) out.push(dailyPage(m, d));
     out.push(habitsPage(m));
   }
   out.push(weeklyPage(), gratitudePage(), notesPage());
@@ -253,25 +248,25 @@ const outRoot = join(root, 'export');
 
 for (const [theme, themeCss] of Object.entries(themes)) {
   mkdirSync(join(outRoot, theme), { recursive: true });
-  writeFileSync(join(outRoot, theme, 'goyo-print.html'), doc(`GOYO ${YEAR} — ${theme}`, themeCss, body));
+  writeFileSync(join(outRoot, theme, 'goyo-print.html'), doc(`GOYO — ${theme}`, themeCss, body));
 }
 /* live preview (default dark) with the review theme switcher */
-writeFileSync(join(root, 'planner.html'), doc(`GOYO ${YEAR} — planner`, '', body, { switcher: true }));
+writeFileSync(join(root, 'planner.html'), doc('GOYO — planner', '', body, { switcher: true }));
 
 /* contact sheet */
 const sheet = Object.keys(themes).map((t) =>
   `<section><h2>${t}</h2><ul><li><a href="${t}/goyo-print.html">Combined HTML (print → PDF)</a></li>`
   + `<li><a href="${t}/goyo.pdf">goyo.pdf</a></li></ul></section>`).join('\n');
 writeFileSync(join(outRoot, 'index.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>GOYO ${YEAR} — exports</title><style>
+<title>GOYO — exports</title><style>
 body{font:14px/1.6 system-ui,sans-serif;background:#14181a;color:#e9e6df;margin:0;padding:40px;}
 h1{font-weight:400;letter-spacing:.04em;}h2{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:#74a89f;}
 section{display:inline-block;vertical-align:top;margin:0 48px 24px 0;}ul{list-style:none;padding:0;}
 a{color:#e9e6df;text-decoration:none;}a:hover{color:#74a89f;}
-</style></head><body><h1>GOYO ${YEAR} — full-year planner</h1>
-<p style="color:#8a9499">${pages.length} pages · cover + year + 12 months + 365 days + 12 habit grids + weekly + gratitude + notes. Internal links wired (rail → months, year → months, calendar → days, day → month).</p>
+</style></head><body><h1>GOYO — undated full-year planner</h1>
+<p style="color:#8a9499">${pages.length} pages · cover + year + 12 months + 366 days + 12 habit grids + weekly + gratitude + notes. Undated (no year, no weekday — reuse every year). Internal links wired (rail → months, year → months, calendar → days, day → month).</p>
 ${sheet}</body></html>`);
 
 const days = pages.filter((p) => /id="p-d/.test(p)).length;
-console.log(`Built ${pages.length} pages for ${YEAR} (${days} days) → export/<theme>/goyo-print.html + planner.html`);
+console.log(`Built ${pages.length} pages (undated, ${days} days) → export/<theme>/goyo-print.html + planner.html`);
 console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo.pdf (internal links preserved)`);

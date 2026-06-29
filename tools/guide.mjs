@@ -15,7 +15,6 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
-const YEAR = Number(process.env.GOYO_YEAR) || 2026;
 const tokens = read('css/tokens.css');
 const base   = read('css/base.css');
 const html   = read('index.html');
@@ -45,9 +44,9 @@ const welcome = `<div class="page"><div class="gpad g-welcome">
   <div class="g-tag">a quiet daily ritual</div>
   <p class="g-lead">Thank you for your purchase — and for supporting a small studio.
     GOYO is a hyperlinked wellness journal for <b>GoodNotes</b> and <b>Notability</b>:
-    a full ${YEAR} of <b>365 daily pages</b>, twelve monthly calendars, habit trackers,
+    an <b>undated</b> full year — a page for <b>every day</b> (366, leap-year ready), twelve monthly calendars, habit trackers,
     a weekly reflection and a gratitude log — every page a tap away.</p>
-  <div class="g-rule"><span>STILLNESS, ONE PAGE AT A TIME</span><span>${YEAR} EDITION</span></div>
+  <div class="g-rule"><span>STILLNESS, ONE PAGE AT A TIME</span><span>UNDATED · REUSE EVERY YEAR</span></div>
 </div></div>`;
 
 const howItWorks = gpage('How it works', 'Tap to travel',
@@ -76,7 +75,7 @@ const getSetUp = gpage('Get set up', 'Importing your journal',
   + `<div class="g-sub">Notability</div>
    <p class="g-body">Share → <b>Open in Notability</b>, or import from the Notability library.
    Internal links work the same way.</p>`,
-  'The journal is undated in spirit but dated for ' + YEAR + ' — reuse it next year by duplicating and erasing pages (see next page).');
+  'Undated by design — no year, no weekdays. Write the dates that suit you, and reuse the journal every year.');
 
 const makeItYours = gpage('Make it yours', 'Reuse &amp; rearrange',
   `<div class="g-sub">Duplicate a page (e.g. extra daily or notes)</div>`
@@ -154,7 +153,7 @@ body{display:block;}
 const css = [tokens, base, guideCss].join('\n');
 const out = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOYO ${YEAR} — User guide</title>
+<title>GOYO — User guide</title>
 ${fonts}
 <style>${css}</style></head><body>
 ${pages.join('\n')}

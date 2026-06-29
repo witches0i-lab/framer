@@ -75,11 +75,12 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
    rewrite anchors to sibling `.html`. Test with `docs/link-test.md`. Rail → single Monthly page
    until roadmap 4 adds 12 monthlies.
 4. ~~New pages: weekly reflection, year-at-a-glance, gratitude log.~~ ✅ Plus the big scale-up:
-   `tools/planner.mjs` generates the **full dated year** (default 2026, `GOYO_YEAR` env to change) —
-   cover, year-at-a-glance, 12 real monthly calendars, **all 365 daily pages**, 12 monthly habit
-   grids, weekly reflection, gratitude log, notes (394 pages). Every nav is wired: rail JAN–DEC →
-   the 12 months everywhere, year → months, calendar day → that day, day → back to its month
-   (~18.9k link annotations / PDF). `tools/guide.mjs` builds the companion user guide. The 7-page
+   `tools/planner.mjs` generates the **full undated year** — cover, year-at-a-glance, 12 monthly
+   pages, **a page for every day** (366 incl. Feb 29 so it works in leap years), 12 monthly habit
+   grids, weekly reflection, gratitude log, notes (395 pages). **No year, no weekday is printed**
+   (it is undated — reuse every year; `MLEN` fixes month lengths). Every nav is wired: rail JAN–DEC
+   → the 12 months everywhere, year → months, calendar day → that day, day → back to its month
+   (~19k link annotations / PDF). `tools/guide.mjs` builds the companion user guide. The 7-page
    `index.html` remains the hand-authored design sample.
 
 ## Conventions

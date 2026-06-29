@@ -33,7 +33,10 @@ themes/           colourway overrides (light.css, hanji.css) — opt-in
 - **Variations = edit `css/tokens.css` only.** Colour, font, spacing, and frame are all tokens.
   Never fork the layout to reskin it. To try a colourway, add/override `:root` in a theme file.
 - **Apply a theme:** add `<link rel="stylesheet" href="themes/light.css">` *after* `css/tokens.css`
-  in `index.html` (later link wins). Default ships dark.
+  in `index.html` (later link wins). Default ships dark. For review, the workspace **theme
+  switcher** (top-right pill, `js/switcher.js`) swaps the empty `#theme` link's `href` at runtime
+  and remembers the choice in `localStorage`. The switcher lives outside every `.page`, so it is
+  excluded from any print/export pass.
 - Keep the type hierarchy: one serif display per page (`--serif`, Fraunces), everything else
   `--sans` (Inter) at `--t-label` (11px, uppercase, letter-spaced) with hairline separators.
 - Accents: `--accent` (celadon) = active/section; `--accent2` (pink) = dividers, gratitude, seal.
@@ -45,7 +48,8 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
 `assets/goyo-cover-medallion.svg/.png` is the print/Figma copy.
 
 ## Roadmap (good tasks)
-1. `themes/` colourways + a tiny theme switcher for review.
+1. ~~`themes/` colourways + a tiny theme switcher for review.~~ ✅ Najeon (default dark) /
+   Light / Hanji, swapped live via the top-right switcher.
 2. Per-theme **export to print-ready HTML** (one file per page, no workspace chrome/labels).
 3. **Hyperlinked-PDF pipeline** — wire nav as anchors (tabs→pages, rail→months, index→sections),
    render to PDF preserving internal links, and a GoodNotes link-test checklist.

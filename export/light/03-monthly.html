@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GOYO · 03 Monthly · light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   GOYO — Design Tokens (single source of truth)
+   This is the design system. Change a variation by editing
+   ONLY this file; index.html and every page inherit it.
+   ============================================================ */
+:root{
+  /* ---- palette ---------------------------------------------------------- */
+  --bg:#14181a;          /* page base (dark ink)            */
+  --surface:#1b2225;     /* raised panels                   */
+  --line:#2c363a;        /* visible borders                 */
+  --hair:#232c30;        /* hairline separators             */
+  --ink:#e9e6df;         /* primary text                    */
+  --muted:#8a9499;       /* secondary text / labels         */
+  --faint:#5f6b6f;       /* tertiary text                   */
+  --accent:#74a89f;      /* PRIMARY accent  (celadon)       */
+  --accent-deep:#3c4f4c;
+  --accent-line:#33423f;
+  --accent2:#e6bcc7;     /* SECONDARY accent (najeon pink)  */
+  --accent2-line:rgba(230,188,199,.40);
+  --accent2-fill:rgba(230,188,199,.05);
+  --moon:#efe4cf;
+
+  /* ---- type ------------------------------------------------------------- */
+  --serif:'Fraunces',Georgia,serif;     /* display only      */
+  --sans:'Inter',system-ui,sans-serif;  /* everything else   */
+  --t-num:60px;          /* focal numeral / month           */
+  --t-h1:38px;           /* page title                      */
+  --t-body:15px;
+  --t-label:11px;        /* uppercase micro-labels          */
+  --t-meta:12px;
+  --ls-label:.18em;      /* label letter-spacing            */
+
+  /* ---- spacing & frame -------------------------------------------------- */
+  --pad:44px;            /* body padding                    */
+  --gap:22px;
+  --pw:1080px; --ph:1440px;   /* page size (GoodNotes/Notability portrait) */
+  --rail:40px;           /* right month-rail width          */
+  --tabh:64px;           /* top tab-bar height              */
+}
+
+/* ------------------------------------------------------------------
+   VARIATION RECIPES — copy a block into a new themed stylesheet,
+   or override :root in a per-theme file. Layout never changes.
+   ------------------------------------------------------------------ */
+
+/* [Light / "paper"] ------------------------------------------------
+:root{
+  --bg:#f4f1ea; --surface:#ffffff; --line:#ddd6c8; --hair:#e7e1d4;
+  --ink:#2a2722; --muted:#7a756c; --faint:#a8a294;
+  --accent:#5f8c82; --accent-deep:#cfe0db; --accent-line:#d6e3df;
+  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.40); --accent2-fill:rgba(201,141,160,.06);
+}
+*/
+
+/* [Warm / "hanji"] -------------------------------------------------
+:root{
+  --bg:#1a1714; --surface:#23201b; --line:#3a342c; --hair:#2c2823;
+  --ink:#efe7d8; --muted:#9c917f; --faint:#6e655a;
+  --accent:#c08a3e; --accent-deep:#4a3b22; --accent-line:#473b28;
+  --accent2:#a8c0b4; --accent2-line:rgba(168,192,180,.40); --accent2-fill:rgba(168,192,180,.05);
+}
+*/
+
+/* [Type swap] ------------------------------------------------------
+:root{ --serif:'Cormorant Garamond',serif; --sans:'Manrope',sans-serif; }
+*/
+
+/* =========================================================================
+   GOYO — BASE LAYOUT / DESIGN SYSTEM
+   To make a variation, change ONLY the tokens in :root below.
+   (palette + fonts are fully tokenised; layout stays intact)
+   ========================================================================= */
+
+
+/* ---- workspace (outside the page; ignored on export) -------------------- */
+*{box-sizing:border-box;}
+body{margin:0;background:#0c0e0f;font-family:var(--sans);color:var(--ink);
+  display:flex;flex-direction:column;align-items:center;gap:0;padding:60px 20px 120px;}
+.flabel{width:var(--pw);margin:34px auto 8px;color:#5f6b6f;font-size:13px;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:500;}
+.flabel span{color:var(--accent);}
+
+/* ---- workspace theme switcher (review only; sits outside every .page) --- */
+.switcher{position:fixed;top:18px;right:18px;z-index:50;display:flex;align-items:center;
+  gap:4px;padding:6px;border-radius:999px;background:rgba(20,24,26,.86);
+  border:1px solid var(--line);backdrop-filter:blur(8px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+.switcher-cap{font-size:10px;letter-spacing:var(--ls-label);text-transform:uppercase;
+  color:var(--faint);padding:0 8px 0 6px;}
+.switcher .sw{font-family:var(--sans);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);background:none;border:0;border-radius:999px;padding:7px 13px;cursor:pointer;
+  transition:color .15s,background .15s;}
+.switcher .sw:hover{color:var(--ink);}
+.switcher .sw.on{color:var(--bg);background:var(--accent);font-weight:600;}
+
+/* ---- page frame --------------------------------------------------------- */
+.page{width:var(--pw);height:var(--ph);background:var(--bg);position:relative;overflow:hidden;flex:none;}
+.content{position:absolute;top:var(--tabh);left:0;right:var(--rail);bottom:0;
+  padding:var(--pad);display:flex;flex-direction:column;}
+
+/* ---- chrome: top tabs --------------------------------------------------- */
+.tabs{position:absolute;top:0;left:0;right:var(--rail);height:var(--tabh);
+  display:flex;align-items:center;border-bottom:1px solid var(--hair);}
+.tab{flex:1;position:relative;display:flex;align-items:center;justify-content:center;
+  height:100%;font-size:14px;letter-spacing:.05em;color:var(--muted);}
+.tab.on{color:var(--accent);font-weight:600;}
+.tab.on::after{content:"";position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+  width:22px;height:2px;border-radius:2px;background:var(--accent);}
+/* ---- chrome: right month rail ------------------------------------------ */
+.rail{position:absolute;top:0;right:0;width:var(--rail);bottom:0;display:flex;
+  flex-direction:column;border-left:1px solid var(--hair);}
+.rm{flex:1;display:flex;align-items:center;justify-content:center;font-size:11px;
+  letter-spacing:.16em;color:var(--faint);border-bottom:1px solid var(--hair);
+  writing-mode:vertical-rl;text-orientation:sideways;}
+.rm.on{color:var(--accent);background:var(--surface);font-weight:600;}
+/* ---- chrome: najeon seal ----------------------------------------------- */
+.seal{display:flex;margin-bottom:18px;}
+.seal svg{height:13px;width:auto;}
+
+/* ---- shared components -------------------------------------------------- */
+.eyebrow{font-size:var(--t-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent);}
+.h1{font-family:var(--serif);font-weight:300;font-size:var(--t-h1);color:var(--ink);margin:8px 0 0;line-height:1;}
+.h1 em{font-style:italic;color:var(--accent);}
+.phead{display:flex;justify-content:space-between;align-items:flex-end;}
+.pmeta{font-size:var(--t-meta);letter-spacing:.06em;color:var(--muted);text-align:right;line-height:1.8;}
+.hr{height:1px;background:var(--hair);}
+.hr.pink{background:var(--accent2);opacity:.5;}
+.hr.spaced{margin:18px 0 4px;}
+.lbl{font-size:var(--t-label);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.sec{font-size:var(--t-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent);
+  border-bottom:1px solid var(--accent-line);padding-bottom:9px;margin:22px 0 2px;}
+.box{border:1px solid var(--hair);border-radius:9px;margin-top:10px;}
+.row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--hair);}
+.row .k{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:64px;flex:none;}
+.row .v{flex:1;display:flex;justify-content:flex-end;align-items:center;gap:8px;}
+.fill{flex:1;border-bottom:1px solid var(--hair);}
+
+/* ============ COVER ============ */
+.cover{height:100%;padding:74px 84px 80px;display:flex;flex-direction:column;
+  background:radial-gradient(120% 80% at 50% 30%,#16191b 0%,#0c0e0f 60%,#080909 100%);}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;}
+.cover-eye{font-size:16px;letter-spacing:.42em;text-transform:uppercase;color:var(--faint);}
+.cover-year{font-family:var(--serif);font-style:italic;font-weight:300;font-size:21px;color:var(--accent);}
+.med-wrap{position:relative;flex:1;display:flex;align-items:center;justify-content:center;margin:26px 0 10px;}
+.med-glow{position:absolute;width:700px;height:700px;border-radius:50%;
+  background:radial-gradient(circle,rgba(214,184,142,.16),rgba(116,168,159,.05) 46%,transparent 70%);filter:blur(12px);}
+.medallion{position:relative;width:690px;height:690px;}
+.cover-foot{display:flex;flex-direction:column;align-items:center;}
+.wordmark{font-family:var(--serif);font-weight:300;font-size:56px;letter-spacing:.36em;color:var(--ink);padding-left:.36em;}
+.tagline{font-family:var(--serif);font-style:italic;font-weight:400;font-size:25px;color:var(--accent);margin-top:14px;}
+.cover-rule{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:46px;
+  border-top:1px solid var(--hair);padding-top:24px;font-size:15px;color:var(--faint);letter-spacing:.07em;}
+
+/* ============ INDEX ============ */
+.ix-sub{font-size:14px;color:var(--muted);margin-top:12px;}
+.ix-list{margin-top:30px;}
+.ix-row{display:flex;align-items:baseline;gap:18px;padding:20px 2px;border-bottom:1px solid var(--hair);}
+.ix-n{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--accent);width:36px;flex:none;}
+.ix-name{font-size:20px;color:var(--ink);}
+.ix-lead{flex:1;}
+.ix-meta{font-size:var(--t-label);letter-spacing:.1em;color:var(--faint);}
+
+/* ============ MONTHLY ============ */
+.cal{margin-top:22px;display:grid;grid-template-columns:repeat(7,1fr);
+  border-top:1px solid var(--hair);border-left:1px solid var(--hair);}
+.cal .dw{padding:11px 0;text-align:center;font-size:var(--t-label);letter-spacing:.14em;color:var(--faint);
+  text-transform:uppercase;border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);}
+.cal .cell{height:140px;padding:11px 12px;font-size:14px;color:var(--muted);
+  border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);}
+.cal .cell.dim{color:var(--faint);opacity:.4;}
+.m-foot{margin-top:22px;display:grid;grid-template-columns:1.7fr 1fr;gap:var(--gap);}
+.m-col .lbl{margin-bottom:14px;}
+.m-col .ln{height:1px;background:var(--hair);margin:20px 0;}
+
+/* ============ WEEKLY ============ */
+.wk{margin-top:20px;flex:1;display:grid;grid-template-columns:repeat(7,1fr);
+  border-top:1px solid var(--hair);border-left:1px solid var(--hair);}
+.wk .col{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);display:flex;flex-direction:column;}
+.wk .ch{padding:12px 12px 10px;border-bottom:1px solid var(--hair);}
+.wk .cw{font-size:var(--t-label);letter-spacing:.12em;color:var(--faint);text-transform:uppercase;}
+.wk .cd{font-family:var(--serif);font-size:24px;color:var(--ink);margin-top:2px;}
+.wk .cl{flex:1;background-image:repeating-linear-gradient(to bottom,transparent 0 37px,var(--hair) 37px 38px);}
+
+/* ============ DAILY ============ */
+.dtop{display:flex;align-items:flex-start;gap:22px;}
+.dnum{font-family:var(--serif);font-weight:300;font-size:var(--t-num);line-height:.85;color:var(--ink);}
+.dstrip{flex:1;display:flex;flex-wrap:wrap;gap:8px 9px;padding-top:16px;}
+.dstrip span{font-size:13px;color:var(--faint);min-width:20px;height:20px;line-height:20px;text-align:center;}
+.dstrip span.on{color:var(--bg);background:var(--accent);border-radius:50%;font-weight:600;}
+.dsub{display:flex;align-items:center;gap:16px;margin-top:6px;}
+.dsub .mo{font-family:var(--serif);font-style:italic;font-size:28px;color:var(--accent);}
+.dowp{display:flex;gap:6px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;}
+.dowp b{font-weight:400;font-size:12px;color:var(--faint);letter-spacing:.05em;width:15px;text-align:center;}
+.dowp b.on{color:var(--accent);font-weight:700;}
+.dcols{display:grid;grid-template-columns:0.84fr 1.16fr;gap:32px;margin-top:24px;align-items:stretch;flex:1;}
+.dcol-l{display:flex;flex-direction:column;}
+.dcol-r{display:flex;}
+.wxr{display:flex;gap:20px;margin-top:11px;}
+.wxr svg{width:24px;height:24px;}
+.face{width:23px;height:23px;border-radius:50%;border:1px solid var(--accent-line);
+  display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--faint);}
+.face.on{background:var(--accent);border-color:var(--accent);color:var(--bg);}
+.ebar{display:flex;gap:5px;align-items:flex-end;height:24px;}
+.ebar i{width:9px;background:var(--accent-deep);border-radius:2px;}
+.ebar i.on{background:var(--accent);}
+.cup{width:17px;height:18px;}
+.hrs{font-size:12px;color:var(--faint);letter-spacing:.06em;}
+.nf{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);}
+.nf .k{font-size:12px;color:var(--muted);width:84px;letter-spacing:.03em;}
+.journal{flex:1;border:1px solid var(--hair);border-radius:11px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 43px,var(--hair) 43px 44px);
+  background-position:0 16px;}
+
+/* ============ HABITS ============ */
+.hb{margin-top:22px;border-top:1px solid var(--hair);}
+.hb-row{display:grid;grid-template-columns:220px 1fr;border-bottom:1px solid var(--hair);}
+.hb-name{padding:16px 0;font-size:16px;color:var(--ink);border-right:1px solid var(--hair);display:flex;align-items:center;}
+.hb-name.head{font-size:var(--t-label);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+.hb-days{display:grid;grid-template-columns:repeat(31,1fr);}
+.hb-c{display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--faint);padding:16px 0;}
+.hb-c .o{width:11px;height:11px;border-radius:50%;border:1px solid var(--accent-line);}
+.hb-c .o.f{background:var(--accent);border-color:var(--accent);}
+.hb-foot{margin-top:auto;padding-top:20px;font-size:var(--t-label);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--faint);}
+.hb-fill{flex:1;margin-top:14px;border:1px solid var(--hair);border-radius:11px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 41px,var(--hair) 41px 42px);background-position:0 14px;}
+
+/* ============ NOTES ============ */
+.ptabs{margin-top:20px;display:flex;gap:10px;}
+.ptab{padding:9px 20px;border:1px solid var(--hair);border-radius:999px;font-size:13px;color:var(--muted);letter-spacing:.04em;}
+.ptab.on{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600;}
+.nt{margin-top:18px;flex:1;border:1px solid var(--hair);border-radius:11px;
+  background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:32px 32px;background-position:14px 14px;}
+
+/* GOYO theme — Light "paper". Link AFTER css/tokens.css to apply. */
+:root{
+  --bg:#f4f1ea; --surface:#ffffff; --line:#ddd6c8; --hair:#e7e1d4;
+  --ink:#2a2722; --muted:#7a756c; --faint:#a8a294;
+  --accent:#5f8c82; --accent-deep:#cfe0db; --accent-line:#d6e3df;
+  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.40); --accent2-fill:rgba(201,141,160,.06);
+}
+
+
+/* ---- print/export reset (workspace chrome removed) ---- */
+html,body{margin:0;padding:0;background:var(--bg);}
+body{display:block;min-height:0;}
+.page{margin:0 auto;}
+@page{size:1080px 1440px;margin:0;}
+@media print{html,body{background:#fff;}.page{box-shadow:none;}}
+
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="tabs"><div class="tab">Index</div><div class="tab">Daily</div><div class="tab">Weekly</div><div class="tab on">Monthly</div><div class="tab">Habits</div><div class="tab">Notes</div></div>
+  <div class="rail"><div class="rm on">JAN</div><div class="rm">FEB</div><div class="rm">MAR</div><div class="rm">APR</div><div class="rm">MAY</div><div class="rm">JUN</div><div class="rm">JUL</div><div class="rm">AUG</div><div class="rm">SEP</div><div class="rm">OCT</div><div class="rm">NOV</div><div class="rm">DEC</div></div>
+  <div class="content">
+    <div class="seal"></div>
+    <div class="phead"><div><div class="eyebrow">Month 01 / 12</div><h1 class="h1">January</h1></div>
+      <div class="pmeta">INTENTION ____________<br>FOCUS ____________</div></div>
+    <div class="hr pink spaced"></div>
+    <div class="cal" id="cal"></div>
+    <div class="m-foot">
+      <div class="m-col"><div class="lbl">This month I want to feel</div><div class="ln"></div><div class="ln"></div></div>
+      <div class="m-col"><div class="lbl">Small joys</div><div class="ln"></div><div class="ln"></div></div>
+    </div>
+  </div>
+</div>
+<script>
+/* ---- najeon cover medallion (water · moon · pine in lower-left) ---- */
+(function(){
+  var NS='http://www.w3.org/2000/svg',art=document.getElementById('art');if(!art)return;
+  var IR=['url(#ir1)','url(#ir2)','url(#ir3)','url(#ir4)'];
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  function ri(){return IR[Math.floor(rnd()*IR.length)];}
+  function mb(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  var rnd=mb(11);
+  var hz=454,bot=716;
+  for(var y=hz;y<bot;y+=8){var dp=(y-hz)/(bot-hz),ct=Math.floor(28+dp*34);
+    for(var i=0;i<ct;i++){var x=20+rnd()*720,w=4+rnd()*(12+dp*20),op=(0.10+rnd()*0.55)*(1-dp*0.5);
+      art.appendChild(el('rect',{x:x.toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:(1.4+rnd()*1.6).toFixed(1),rx:1,fill:ri(),opacity:op.toFixed(2)}));}}
+  function streak(cx){for(var y=hz;y<bot;y+=7){var dp=(y-hz)/(bot-hz),w=10+rnd()*26;
+    art.appendChild(el('rect',{x:(cx-w/2+(rnd()-0.5)*30).toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:(1.6+rnd()*1.8).toFixed(1),rx:1,fill:ri(),opacity:((0.22+rnd()*0.5)*(1-dp*0.45)).toFixed(2)}));}}
+  streak(210);streak(536);
+  art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'url(#moonGrad)'}));
+  art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'none',stroke:'#fff5e6','stroke-width':3,opacity:.10}));
+  var tg=el('g',{transform:'translate(-98 132)'});art.appendChild(tg);
+  var SH=['#eef2f3','#e3ebee','#d4dfe3','#f4f0e6'];
+  function sh(){return SH[Math.floor(rnd()*4)];}
+  function P(x,y){return x.toFixed(1)+','+y.toFixed(1);}
+  function fan(x,y,open,sc){var arc=1.5+rnd()*0.5,a1=open-arc/2,a2=open+arc/2,R=(28+rnd()*16)*sc;
+    var b1x=x+Math.cos(a1)*R,b1y=y+Math.sin(a1)*R,b2x=x+Math.cos(a2)*R,b2y=y+Math.sin(a2)*R;
+    tg.appendChild(el('path',{d:'M'+P(x,y)+' L'+P(b1x,b1y)+' A'+R.toFixed(1)+' '+R.toFixed(1)+' 0 0 1 '+P(b2x,b2y)+' Z',fill:ri(),opacity:(0.09+rnd()*0.10).toFixed(2)}));
+    var rays=18+Math.floor(rnd()*10);
+    for(var i=0;i<rays;i++){var a=a1+arc*(i/(rays-1)),len=R*(0.82+rnd()*0.22);
+      tg.appendChild(el('line',{x1:x.toFixed(1),y1:y.toFixed(1),x2:(x+Math.cos(a)*len).toFixed(1),y2:(y+Math.sin(a)*len).toFixed(1),stroke:sh(),'stroke-width':(0.7+rnd()*0.7).toFixed(1),'stroke-linecap':'round',opacity:(0.45+rnd()*0.4).toFixed(2)}));}
+    tg.appendChild(el('path',{d:'M'+P(b1x,b1y)+' A'+R.toFixed(1)+' '+R.toFixed(1)+' 0 0 1 '+P(b2x,b2y),fill:'none',stroke:sh(),'stroke-width':0.8,opacity:(0.28+rnd()*0.3).toFixed(2)}));
+    tg.appendChild(el('circle',{cx:x.toFixed(1),cy:y.toFixed(1),r:(2+rnd()*2).toFixed(1),fill:sh(),opacity:.7}));}
+  function limb(pts,w0){for(var i=0;i<pts.length-1;i++){var w=Math.max(1.4,w0*(1-i/(pts.length-1)*0.62));
+    tg.appendChild(el('line',{x1:pts[i][0],y1:pts[i][1],x2:pts[i+1][0],y2:pts[i+1][1],stroke:sh(),'stroke-width':w.toFixed(1),'stroke-linecap':'round',opacity:.82}));
+    var dx=pts[i+1][0]-pts[i][0],dy=pts[i+1][1]-pts[i][1],L=Math.hypot(dx,dy),st=Math.max(1,Math.floor(L/9)),ang=Math.atan2(dy,dx)*57.2958;
+    for(var s=0;s<st;s++){var t=s/st,fx=pts[i][0]+dx*t,fy=pts[i][1]+dy*t;
+      if(rnd()<0.5)tg.appendChild(el('ellipse',{cx:fx.toFixed(1),cy:fy.toFixed(1),rx:(1+rnd()*2).toFixed(1),ry:(0.6+rnd()*1.2).toFixed(1),fill:ri(),opacity:(0.3+rnd()*0.4).toFixed(2),transform:'rotate('+ang.toFixed(0)+' '+fx.toFixed(1)+' '+fy.toFixed(1)+')'}));
+      if(rnd()<0.32){var na=Math.atan2(dy,dx)+Math.PI/2,cl=w*0.85;tg.appendChild(el('line',{x1:(fx-Math.cos(na)*cl).toFixed(1),y1:(fy-Math.sin(na)*cl).toFixed(1),x2:(fx+Math.cos(na)*cl).toFixed(1),y2:(fy+Math.sin(na)*cl).toFixed(1),stroke:'#0a0c0d','stroke-width':0.8,opacity:.5}));}}}}
+  function cf(x,y,open,sc){var k=3+Math.floor(rnd()*3);for(var c=0;c<k;c++)fan(x+(rnd()-0.5)*22*sc,y+(rnd()-0.5)*16*sc,open+(rnd()-0.5)*0.6,sc*(0.72+rnd()*0.45));}
+  limb([[160,458],[226,442],[292,420],[356,404],[428,372],[488,330],[542,292],[568,256]],24);
+  limb([[226,442],[286,478],[330,540],[352,606]],14);
+  limb([[292,420],[250,402],[210,372],[180,342]],13);
+  limb([[356,404],[352,352],[336,306],[324,270]],11);
+  limb([[428,372],[452,322],[463,274]],11);
+  limb([[488,330],[528,366],[558,422]],11);
+  limb([[428,372],[470,360],[510,340]],9);
+  limb([[356,404],[392,388],[430,392]],8);
+  cf(180,342,-2.1,1.8);cf(214,374,-2.5,1.4);cf(252,402,-2.4,1.1);cf(324,270,-1.6,1.7);cf(300,410,-1.5,1.5);cf(372,398,-1.5,1.5);cf(432,390,-1.5,1.2);cf(463,274,-1.1,1.8);cf(510,340,-0.9,1.4);cf(568,256,-0.6,1.9);cf(540,300,-1.0,1.2);cf(558,422,0.5,1.6);cf(352,606,1.3,1.6);cf(286,478,1.9,1.2);cf(160,458,-2.9,1.2);
+})();
+
+/* ---- najeon seal (flat: celadon + pink + cream) ---- */
+(function(){
+  var m='<svg viewBox="0 0 52 16">'
+    +'<ellipse cx="6" cy="9" rx="5" ry="3" fill="#74a89f" opacity=".9"/>'
+    +'<ellipse cx="17" cy="9" rx="3.3" ry="2.1" fill="#e6bcc7" opacity=".85"/>'
+    +'<ellipse cx="25" cy="9" rx="1.9" ry="1.3" fill="#cdbfb0" opacity=".6"/>'
+    +'<circle cx="44" cy="7" r="4" fill="#efe4cf" opacity=".85"/></svg>';
+  document.querySelectorAll('.seal').forEach(function(s){s.innerHTML=m;});
+})();
+
+/* ---- daily: date strip + water cups ---- */
+(function(){
+  var ds=document.getElementById('dstrip');
+  if(ds){var h='';for(var d=1;d<=31;d++){h+='<span'+(d===6?' class="on"':'')+'>'+d+'</span>';}ds.innerHTML=h;}
+  var cups=document.getElementById('cups');
+  if(cups){var c='';for(var i=0;i<7;i++){var col=i<3?'#74a89f':'#34433f';
+    c+='<svg class="cup" viewBox="0 0 20 22" fill="none" stroke="'+col+'" stroke-width="1.3"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>';}cups.innerHTML=c;}
+})();
+
+/* ---- monthly calendar grid ---- */
+(function(){
+  var cal=document.getElementById('cal');if(!cal)return;
+  var dows=['MON','TUE','WED','THU','FRI','SAT','SUN'],h='';
+  dows.forEach(function(d){h+='<div class="dw">'+d+'</div>';});
+  var lead=2,day=1,cells=35;
+  for(var i=0;i<cells;i++){
+    if(i<lead||day>31){h+='<div class="cell dim"></div>';}
+    else{h+='<div class="cell">'+day+'</div>';day++;}
+  }
+  cal.innerHTML=h;
+})();
+
+/* ---- weekly columns ---- */
+(function(){
+  var wk=document.getElementById('wk');if(!wk)return;
+  var d=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],h='';
+  d.forEach(function(x){h+='<div class="col"><div class="ch"><div class="cw">'+x+'</div><div class="cd">—</div></div><div class="cl"></div></div>';});
+  wk.innerHTML=h;
+})();
+
+/* ---- habit grid ---- */
+(function(){
+  var hb=document.getElementById('hb');if(!hb)return;
+  var habits=['Move my body','Drink water','Time outside','Read','Sleep by 11','No-phone hour','Be kind to myself'];
+  var head='<div class="hb-row"><div class="hb-name head">Habit</div><div class="hb-days">';
+  for(var d=1;d<=31;d++)head+='<div class="hb-c">'+d+'</div>';head+='</div></div>';
+  var rows=head;
+  habits.forEach(function(name,r){
+    var row='<div class="hb-row"><div class="hb-name">'+name+'</div><div class="hb-days">';
+    for(var d=1;d<=31;d++){var f=((d*7+r*3)%5===0)?' f':'';row+='<div class="hb-c"><div class="o'+f+'"></div></div>';}
+    row+='</div></div>';rows+=row;
+  });
+  hb.innerHTML=rows;
+})();
+
+</script>
+</body>
+</html>

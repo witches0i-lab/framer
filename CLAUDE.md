@@ -27,6 +27,8 @@ js/medallion.js   procedural najeon cover art (seeded PRNG → SVG into #art)
 js/journal.js     seal + page generators (date strip, calendar, weekly cols, habit grid)
 assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
+tools/export.mjs  print-ready export: one self-contained HTML per page × theme → export/
+export/           generated print-ready output (regenerate via `npm run export`)
 ```
 
 ## Design system rules (important)
@@ -50,7 +52,10 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
 ## Roadmap (good tasks)
 1. ~~`themes/` colourways + a tiny theme switcher for review.~~ ✅ Najeon (default dark) /
    Light / Hanji, swapped live via the top-right switcher.
-2. Per-theme **export to print-ready HTML** (one file per page, no workspace chrome/labels).
+2. ~~Per-theme **export to print-ready HTML** (one file per page, no workspace chrome/labels).~~
+   ✅ `npm run export` (`tools/export.mjs`) → `export/<theme>/NN-name.html` (7 pages × 3 themes),
+   each self-contained (inlined CSS/JS, no chrome) at 1080×1440. `export/index.html` is a contact
+   sheet. Dependency-free (Node built-ins only).
 3. **Hyperlinked-PDF pipeline** — wire nav as anchors (tabs→pages, rail→months, index→sections),
    render to PDF preserving internal links, and a GoodNotes link-test checklist.
 4. New pages: weekly reflection, year-at-a-glance, gratitude log.

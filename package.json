@@ -5,6 +5,7 @@
   "description": "GOYO — dark-mode wellness journal (undated, GoodNotes/Notability hyperlinked PDF)",
   "scripts": {
     "dev": "python3 -m http.server 5173",
-    "start": "python3 -m http.server 5173"
+    "start": "python3 -m http.server 5173",
+    "export": "node tools/export.mjs"
   }
 }

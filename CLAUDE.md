@@ -8,29 +8,38 @@ GOYO (고요, "stillness") is a **dark-mode, undated wellness journal** sold on 
 mother-of-pearl) reinterpreted as modern, minimal, editorial. Identity = celadon (primary) +
 najeon pink (secondary) on dark ink, with a procedural najeon medallion on the cover.
 
-It is a **plain static site** — no framework, no build step, no dependencies.
+The runtime journal is a **plain static site** — no framework, no dependencies. A tiny
+dependency-free **build** (Node built-ins only) generates the sellable product.
+
+**The Etsy product is two files:** the **planner** (`goyo.pdf` — a full hyperlinked year)
+and the **user guide** (`goyo-guide.pdf` — how to import & use it).
 
 ## Run / preview
 ```bash
-python3 -m http.server 5173      # or: npm run dev
-# open http://localhost:5173
+python3 -m http.server 5173      # or: npm run dev  → http://localhost:5173
+# index.html  = 7-page design sample (the archetypes, with the theme switcher)
+# planner.html = generated full-year planner (394 pages), live preview w/ switcher
+
+npm run build   # planner.mjs + guide.mjs + pdf.mjs → export/<theme>/goyo.pdf + export/guide/goyo-guide.pdf
 ```
-Every `.page` is `1080 × 1440` (portrait, tablet-friendly for GoodNotes). The page stacks
-all 7 pages vertically for review; each is one journal page.
+Every `.page` is `1080 × 1440` (portrait, tablet-friendly for GoodNotes).
 
 ## Structure
 ```
-index.html        7 pages of markup (Cover, Index, Monthly, Weekly, Daily, Habits, Notes)
+index.html        7 archetype pages (Cover, Index, Monthly, Weekly, Daily, Habits, Notes) — design sample
 css/tokens.css    DESIGN SYSTEM — single source of truth (palette, type, spacing, frame)
 css/base.css      layout + components (chrome, labels, rows, page-specific). Don't churn.
 js/medallion.js   procedural najeon cover art (seeded PRNG → SVG into #art)
-js/journal.js     seal + page generators (date strip, calendar, weekly cols, habit grid)
+js/journal.js     seal + page generators for the sample (date strip, calendar, cols, habit grid)
+js/switcher.js    review-only theme switcher (swaps the #theme stylesheet)
 assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
-tools/export.mjs  print-ready export: per-page HTML + combined goyo-print.html per theme
-tools/pdf.mjs     render combined files → export/<theme>/goyo.pdf (internal links preserved)
+tools/planner.mjs PRODUCT build: full year → cover, year, 12 months, 365 days, habits, weekly,
+                  gratitude, notes; all internal links wired. → export/<theme>/goyo-print.html + planner.html
+tools/guide.mjs   user-guide build (welcome, navigation, import, reuse, thanks) → export/guide/goyo-guide.html
+tools/pdf.mjs     render every goyo-print.html + the guide → PDF (internal links preserved)
 docs/link-test.md GoodNotes / Notability hyperlink test checklist
-export/           generated output (regenerate via `npm run export && npm run pdf`)
+export/           generated output (regenerate via `npm run build`; large goyo.pdf is gitignored)
 ```
 
 ## Design system rules (important)
@@ -65,7 +74,13 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
    `goyo.pdf` with internal links preserved (~113 link annots / 7 pages). Per-page export files
    rewrite anchors to sibling `.html`. Test with `docs/link-test.md`. Rail → single Monthly page
    until roadmap 4 adds 12 monthlies.
-4. New pages: weekly reflection, year-at-a-glance, gratitude log.
+4. ~~New pages: weekly reflection, year-at-a-glance, gratitude log.~~ ✅ Plus the big scale-up:
+   `tools/planner.mjs` generates the **full dated year** (default 2026, `GOYO_YEAR` env to change) —
+   cover, year-at-a-glance, 12 real monthly calendars, **all 365 daily pages**, 12 monthly habit
+   grids, weekly reflection, gratitude log, notes (394 pages). Every nav is wired: rail JAN–DEC →
+   the 12 months everywhere, year → months, calendar day → that day, day → back to its month
+   (~18.9k link annotations / PDF). `tools/guide.mjs` builds the companion user guide. The 7-page
+   `index.html` remains the hand-authored design sample.
 
 ## Conventions
 - Stay dependency-free and framework-free. No bundler.

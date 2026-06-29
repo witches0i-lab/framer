@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOYO 2026 — light</title>
+<title>GOYO 2026 — planner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" id="theme" href="">
 <style>/* ============================================================
    GOYO — Design Tokens (single source of truth)
    This is the design system. Change a variation by editing
@@ -269,14 +269,6 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .nt{margin-top:18px;flex:1;border:1px solid var(--hair);border-radius:11px;
   background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:32px 32px;background-position:14px 14px;}
 
-/* GOYO theme — Light "paper". Link AFTER css/tokens.css to apply. */
-:root{
-  --bg:#f4f1ea; --surface:#ffffff; --line:#ddd6c8; --hair:#e7e1d4;
-  --ink:#2a2722; --muted:#7a756c; --faint:#a8a294;
-  --accent:#5f8c82; --accent-deep:#cfe0db; --accent-line:#d6e3df;
-  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.40); --accent2-fill:rgba(201,141,160,.06);
-}
-
 
 /* print/export reset — only the pages render */
 html,body{margin:0;padding:0;background:var(--bg);}
@@ -287,6 +279,12 @@ body{display:block;}
 @media print{html,body{background:#fff;}.page{box-shadow:none;}}
 </style></head>
 <body>
+<div class="switcher" role="group" aria-label="Theme">
+  <span class="switcher-cap">Theme</span>
+  <button class="sw on" data-theme="">Najeon</button>
+  <button class="sw" data-theme="themes/light.css">Light</button>
+  <button class="sw" data-theme="themes/hanji.css">Hanji</button>
+</div>
 <div class="page" id="p-cover"><div class="cover">
     <div class="cover-top">
       <div class="cover-eye">Wellness Journal</div>
@@ -9340,5 +9338,5 @@ body{display:block;}
   cf(180,342,-2.1,1.8);cf(214,374,-2.5,1.4);cf(252,402,-2.4,1.1);cf(324,270,-1.6,1.7);cf(300,410,-1.5,1.5);cf(372,398,-1.5,1.5);cf(432,390,-1.5,1.2);cf(463,274,-1.1,1.8);cf(510,340,-0.9,1.4);cf(568,256,-0.6,1.9);cf(540,300,-1.0,1.2);cf(558,422,0.5,1.6);cf(352,606,1.3,1.6);cf(286,478,1.9,1.2);cf(160,458,-2.9,1.2);
 })();
 </script>
-
+<script src="js/switcher.js"></script>
 </body></html>

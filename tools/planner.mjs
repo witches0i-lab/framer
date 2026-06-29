@@ -1,0 +1,277 @@
+/* ============================================================
+   GOYO — full-year planner generator  (roadmap 4 + 12 months + 365 days)
+   Builds the real product: cover, year-at-a-glance, 12 monthly
+   calendars, every day of the year (365), per-month habit pages,
+   a weekly reflection, a gratitude log, and notes — all wired with
+   internal #anchors:
+     • month rail (JAN–DEC) → the 12 monthly pages, everywhere
+     • year-at-a-glance     → each month
+     • monthly calendar day → that day's page
+     • daily page number/month → back to its month
+   Output: export/<theme>/goyo-print.html (combined, hyperlinked) +
+   planner.html (live preview w/ theme switcher). Render PDFs with
+   `node tools/pdf.mjs`.  Dependency-free (Node built-ins only).
+
+     node tools/planner.mjs        # or: npm run export
+   ============================================================ */
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (p) => readFileSync(join(root, p), 'utf8');
+
+const YEAR = Number(process.env.GOYO_YEAR) || 2026;
+
+const tokens    = read('css/tokens.css');
+const base      = read('css/base.css');
+const medallion = read('js/medallion.js');
+const html      = read('index.html');
+
+const themes = { najeon: '', light: read('themes/light.css'), hanji: read('themes/hanji.css') };
+const fonts = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
+/* lift the procedural cover markup straight from the design sample */
+const coverInner = sliceClass(html, 'cover');
+
+/* ---- date helpers ---- */
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MON3 = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DOW_SUN = ['S','M','T','W','T','F','S'];
+const p2 = (n) => String(n).padStart(2, '0');
+const dim = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();        // m is 1-based
+const monIdx = (y, m, d) => (new Date(Date.UTC(y, m - 1, d)).getUTCDay() + 6) % 7; // 0=Mon
+const sunIdx = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).getUTCDay();           // 0=Sun
+
+/* ---- ids ---- */
+const mId = (m) => `p-m${p2(m)}`;
+const dId = (m, d) => `p-d${p2(m)}${p2(d)}`;
+const hId = (m) => `p-h${p2(m)}`;
+
+/* ---- shared chrome ---- */
+const SEAL = '<div class="seal"><svg viewBox="0 0 52 16">'
+  + '<ellipse cx="6" cy="9" rx="5" ry="3" fill="#74a89f" opacity=".9"/>'
+  + '<ellipse cx="17" cy="9" rx="3.3" ry="2.1" fill="#e6bcc7" opacity=".85"/>'
+  + '<ellipse cx="25" cy="9" rx="1.9" ry="1.3" fill="#cdbfb0" opacity=".6"/>'
+  + '<circle cx="44" cy="7" r="4" fill="#efe4cf" opacity=".85"/></svg></div>';
+
+function tabs(activeId, ctxMonth = 1) {
+  const items = [['Year','p-year'],['Weekly','p-weekly'],['Habits',hId(ctxMonth)],['Gratitude','p-grat'],['Notes','p-notes']];
+  return '<div class="tabs">' + items.map(([label, id]) =>
+    `<a class="tab${id === activeId ? ' on' : ''}" href="#${id}">${label}</a>`).join('') + '</div>';
+}
+function rail(activeMonth = 0) {
+  return '<div class="rail">' + MON3.map((mo, i) =>
+    `<a class="rm${i + 1 === activeMonth ? ' on' : ''}" href="#${mId(i + 1)}">${mo}</a>`).join('') + '</div>';
+}
+const page = (id, inner) => `<div class="page" id="${id}">${inner}</div>`;
+
+/* ---- pages ---- */
+function coverPage() {
+  return page('p-cover', coverInner.replace('undated · reuse every year', `${YEAR} · a year of stillness`));
+}
+
+function yearPage() {
+  const cards = MONTHS.map((name, i) => {
+    const m = i + 1, lead = monIdx(YEAR, m, 1), n = dim(YEAR, m);
+    let cells = ['M','T','W','T','F','S','S'].map((w) => `<b>${w}</b>`).join('');
+    for (let k = 0; k < lead; k++) cells += `<i class="dim">·</i>`;
+    for (let d = 1; d <= n; d++) cells += `<i>${d}</i>`;
+    return `<a href="#${mId(m)}"><div class="ym">${name}</div><div class="yg">${cells}</div></a>`;
+  }).join('');
+  const inner = `${tabs('p-year')}${rail()}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow">The year</div><h1 class="h1">${YEAR}</h1></div>
+      <div class="pmeta">TAP A MONTH<br>TO BEGIN</div></div>
+    <div class="yag">${cards}</div></div>`;
+  return page('p-year', inner);
+}
+
+function monthlyPage(m) {
+  const lead = monIdx(YEAR, m, 1), n = dim(YEAR, m);
+  let cal = ['MON','TUE','WED','THU','FRI','SAT','SUN'].map((w) => `<div class="dw">${w}</div>`).join('');
+  const cells = Math.ceil((lead + n) / 7) * 7;
+  let day = 1;
+  for (let i = 0; i < cells; i++) {
+    if (i < lead || day > n) cal += `<div class="cell dim"></div>`;
+    else { cal += `<a class="cell" href="#${dId(m, day)}">${day}</a>`; day++; }
+  }
+  const inner = `${tabs(mId(m), m)}${rail(m)}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow"><a class="rm" href="#p-year">‹ ${YEAR}</a> · Month ${p2(m)} / 12</div>
+      <h1 class="h1">${MONTHS[m - 1]}</h1></div>
+      <div class="pmeta">INTENTION ____________<br>FOCUS ____________</div></div>
+    <div class="hr pink spaced"></div>
+    <div class="cal">${cal}</div>
+    <div class="m-foot">
+      <div class="m-col"><div class="lbl">This month I want to feel</div><div class="ln"></div><div class="ln"></div></div>
+      <div class="m-col"><div class="lbl">Small joys</div><div class="ln"></div><div class="ln"></div></div>
+    </div></div>`;
+  return page(mId(m), inner);
+}
+
+function dailyPage(m, d) {
+  const n = dim(YEAR, m);
+  let strip = '';
+  for (let i = 1; i <= n; i++) strip += `<a class="${i === d ? 'on' : ''}" href="#${dId(m, i)}">${i}</a>`;
+  const dow = DOW_SUN.map((x, i) => `<b${i === sunIdx(YEAR, m, d) ? ' class="on"' : ''}>${x}</b>`).join('');
+  const wx = `<div class="wxr">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.5 5.5l1.4 1.4M17 17l1.5 1.5M18.5 5.5L17 7M7 17l-1.5 1.5" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 18H7z" stroke-linejoin="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 15a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 15H7z" stroke-linejoin="round"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2" stroke-linecap="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="8" cy="8" r="3"/><path d="M11 17a3.5 3.5 0 01.5-7 4.3 4.3 0 018.2 1.3A3 3 0 0119 17h-8z" stroke-linejoin="round"/></svg></div>`;
+  let cups = '';
+  for (let i = 0; i < 7; i++) cups += `<svg class="cup${i < 3 ? ' fill' : ''}" viewBox="0 0 20 22"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>`;
+  const left = `<div class="dcol-l">
+    <div class="lbl">Today's affirmation</div><div class="box" style="height:92px"></div>
+    <div class="lbl" style="margin-top:18px">Today's weather</div>${wx}
+    <div class="sec">Overall well-being</div>
+    <div class="row"><div class="k">Mood</div><div class="v"><div class="face">☻</div><div class="face on">☺</div><div class="face">·</div><div class="face">·</div><div class="face">☹</div></div></div>
+    <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i class="on" style="height:9px"></i><i class="on" style="height:13px"></i><i class="on" style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
+    <div class="row"><div class="k">Sleep</div><div class="v"><div class="fill"></div><span class="hrs">hrs</span></div></div>
+    <div class="row"><div class="k">Water</div><div class="v">${cups}</div></div>
+    <div class="sec">Nutrition check</div>
+    <div class="nf"><div class="k">Breakfast</div><div class="fill"></div></div>
+    <div class="nf"><div class="k">Lunch</div><div class="fill"></div></div>
+    <div class="nf"><div class="k">Dinner</div><div class="fill"></div></div>
+    <div class="nf"><div class="k">Snack</div><div class="fill"></div></div>
+    <div class="lbl" style="margin-top:20px">Today's act of self-care</div><div class="box" style="height:76px"></div>
+    <div class="lbl" style="margin-top:16px;color:var(--accent2)">Grateful for</div>
+    <div class="box" style="flex:1;min-height:96px;border-color:var(--accent2-line);background:var(--accent2-fill)"></div></div>`;
+  const inner = `${tabs('', m)}${rail(m)}<div class="content">
+    <div class="dtop"><a class="dnum" href="#${mId(m)}">${p2(d)}</a><div class="dstrip">${strip}</div></div>
+    <div class="dsub"><a class="mo" href="#${mId(m)}" style="text-decoration:none">${MONTHS[m - 1]}</a>
+      <div class="dowp">${dow}</div></div>
+    <div class="dcols">${left}<div class="dcol-r"><div class="journal"></div></div></div></div>`;
+  return page(dId(m, d), inner);
+}
+
+function habitsPage(m) {
+  const habits = ['Move my body','Drink water','Time outside','Read','Sleep by 11','No-phone hour','Be kind to myself'];
+  let head = '<div class="hb-row"><div class="hb-name head">Habit</div><div class="hb-days">';
+  for (let d = 1; d <= 31; d++) head += `<div class="hb-c">${d}</div>`;
+  head += '</div></div>';
+  const rows = habits.map((name, r) => {
+    let row = `<div class="hb-row"><div class="hb-name">${name}</div><div class="hb-days">`;
+    for (let d = 1; d <= 31; d++) row += `<div class="hb-c"><div class="o"></div></div>`;
+    return row + '</div></div>';
+  }).join('');
+  const inner = `${tabs(hId(m), m)}${rail(m)}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow">Habits · ${MONTHS[m - 1]}</div><h1 class="h1">Gentle <em>habits</em></h1></div>
+      <div class="pmeta">PROGRESS,<br>NOT PERFECTION</div></div>
+    <div class="hr pink spaced"></div>
+    <div class="hb">${head}${rows}</div>
+    <div class="sec" style="margin-top:24px">Notes on this month</div><div class="hb-fill"></div></div>`;
+  return page(hId(m), inner);
+}
+
+function weeklyPage() {
+  const cols = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((x) =>
+    `<div class="col"><div class="ch"><div class="cw">${x}</div><div class="cd">—</div></div><div class="cl"></div></div>`).join('');
+  const inner = `${tabs('p-weekly')}${rail()}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow">Weekly</div><h1 class="h1">Week <em>of</em></h1></div>
+      <div class="pmeta">___ / ___ — ___ / ___<br>ONE THING THAT MATTERS ____</div></div>
+    <div class="hr pink spaced"></div><div class="wk">${cols}</div></div>`;
+  return page('p-weekly', inner);
+}
+
+function gratitudePage() {
+  const rows = MONTHS.map((name, i) =>
+    `<a class="gr" href="#${mId(i + 1)}"><div class="gr-mo">${name}</div><div class="gr-ln"></div></a>`).join('');
+  const inner = `${tabs('p-grat')}${rail()}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow">A year of thanks</div><h1 class="h1">Gratitude <em>log</em></h1></div>
+      <div class="pmeta">ONE LINE,<br>EACH MONTH</div></div>
+    <div class="hr pink spaced"></div><div class="grat">${rows}</div></div>`;
+  return page('p-grat', inner);
+}
+
+function notesPage() {
+  const inner = `${tabs('p-notes')}${rail()}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow">Free space</div><h1 class="h1">Notes</h1></div></div>
+    <div class="ptabs"><div class="ptab on">Dotted</div><div class="ptab">Lined</div><div class="ptab">Grid</div><div class="ptab">Blank</div></div>
+    <div class="nt"></div></div>`;
+  return page('p-notes', inner);
+}
+
+/* ---- assemble the year in reading order ---- */
+function buildPages() {
+  const out = [coverPage(), yearPage()];
+  for (let m = 1; m <= 12; m++) {
+    out.push(monthlyPage(m));
+    for (let d = 1; d <= dim(YEAR, m); d++) out.push(dailyPage(m, d));
+    out.push(habitsPage(m));
+  }
+  out.push(weeklyPage(), gratitudePage(), notesPage());
+  return out;
+}
+
+/* ---- slice an element by class (depth-aware) for the cover lift ---- */
+function sliceClass(src, cls) {
+  const start = src.indexOf(`<div class="${cls}"`);
+  if (start === -1) return '';
+  const re = /<div\b|<\/div>/g; re.lastIndex = start; let d = 0, m;
+  while ((m = re.exec(src))) { d += m[0] === '</div>' ? -1 : 1; if (d === 0) return src.slice(start, re.lastIndex); }
+  return src.slice(start);
+}
+
+/* ---- doc shell ---- */
+const printCss = `
+/* print/export reset — only the pages render */
+html,body{margin:0;padding:0;background:var(--bg);}
+body{display:block;}
+.page{margin:0 auto;break-after:page;page-break-after:always;}
+.page:last-of-type{break-after:auto;}
+@page{size:1080px 1440px;margin:0;}
+@media print{html,body{background:#fff;}.page{box-shadow:none;}}
+`;
+function doc(title, themeCss, body, { switcher = false } = {}) {
+  const css = [tokens, base, themeCss, printCss].filter(Boolean).join('\n');
+  const sw = switcher ? `
+<div class="switcher" role="group" aria-label="Theme">
+  <span class="switcher-cap">Theme</span>
+  <button class="sw on" data-theme="">Najeon</button>
+  <button class="sw" data-theme="themes/light.css">Light</button>
+  <button class="sw" data-theme="themes/hanji.css">Hanji</button>
+</div>` : '';
+  const themeLink = switcher ? '<link rel="stylesheet" id="theme" href="">' : '';
+  const sw_js = switcher ? '<script src="js/switcher.js"></script>' : '';
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title}</title>
+${fonts}
+${themeLink}
+<style>${css}</style></head>
+<body>${sw}
+${body}
+<script>${medallion}</script>
+${sw_js}
+</body></html>
+`;
+}
+
+/* ---- build ---- */
+const pages = buildPages();
+const body = pages.map((p) => p).join('\n');
+const outRoot = join(root, 'export');
+
+for (const [theme, themeCss] of Object.entries(themes)) {
+  mkdirSync(join(outRoot, theme), { recursive: true });
+  writeFileSync(join(outRoot, theme, 'goyo-print.html'), doc(`GOYO ${YEAR} — ${theme}`, themeCss, body));
+}
+/* live preview (default dark) with the review theme switcher */
+writeFileSync(join(root, 'planner.html'), doc(`GOYO ${YEAR} — planner`, '', body, { switcher: true }));
+
+/* contact sheet */
+const sheet = Object.keys(themes).map((t) =>
+  `<section><h2>${t}</h2><ul><li><a href="${t}/goyo-print.html">Combined HTML (print → PDF)</a></li>`
+  + `<li><a href="${t}/goyo.pdf">goyo.pdf</a></li></ul></section>`).join('\n');
+writeFileSync(join(outRoot, 'index.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>GOYO ${YEAR} — exports</title><style>
+body{font:14px/1.6 system-ui,sans-serif;background:#14181a;color:#e9e6df;margin:0;padding:40px;}
+h1{font-weight:400;letter-spacing:.04em;}h2{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:#74a89f;}
+section{display:inline-block;vertical-align:top;margin:0 48px 24px 0;}ul{list-style:none;padding:0;}
+a{color:#e9e6df;text-decoration:none;}a:hover{color:#74a89f;}
+</style></head><body><h1>GOYO ${YEAR} — full-year planner</h1>
+<p style="color:#8a9499">${pages.length} pages · cover + year + 12 months + 365 days + 12 habit grids + weekly + gratitude + notes. Internal links wired (rail → months, year → months, calendar → days, day → month).</p>
+${sheet}</body></html>`);
+
+const days = pages.filter((p) => /id="p-d/.test(p)).length;
+console.log(`Built ${pages.length} pages for ${YEAR} (${days} days) → export/<theme>/goyo-print.html + planner.html`);
+console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo.pdf (internal links preserved)`);

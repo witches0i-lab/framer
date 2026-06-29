@@ -5,3 +5,7 @@ out/
 *.log
 .vscode/
 .idea/
+
+# generated planner PDFs are large (~22MB each) and fully reproducible
+# via `npm run build`; the hyperlinked source HTML is committed instead.
+export/*/goyo.pdf

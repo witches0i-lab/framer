@@ -31,7 +31,8 @@ body{margin:0;background:#0c0e0f;font-family:var(--sans);color:var(--ink);
   padding:var(--pad);display:flex;flex-direction:column;}
 
 /* nav anchors inherit page styling (no default link colour/underline) */
-a.tab,a.rm,a.ix-row{color:inherit;text-decoration:none;}
+a.tab,a.rm,a.ix-row,a.dnum,.dsub a{color:inherit;text-decoration:none;}
+a.dnum:hover,.dsub a:hover{color:var(--accent);}
 /* ---- chrome: top tabs --------------------------------------------------- */
 .tabs{position:absolute;top:0;left:0;right:var(--rail);height:var(--tabh);
   display:flex;align-items:center;border-bottom:1px solid var(--hair);}
@@ -130,14 +131,15 @@ a.tab,a.rm,a.ix-row{color:inherit;text-decoration:none;}
 .dcol-l{display:flex;flex-direction:column;}
 .dcol-r{display:flex;}
 .wxr{display:flex;gap:20px;margin-top:11px;}
-.wxr svg{width:24px;height:24px;}
+.wxr svg{width:24px;height:24px;stroke:var(--muted);}
 .face{width:23px;height:23px;border-radius:50%;border:1px solid var(--accent-line);
   display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--faint);}
 .face.on{background:var(--accent);border-color:var(--accent);color:var(--bg);}
 .ebar{display:flex;gap:5px;align-items:flex-end;height:24px;}
 .ebar i{width:9px;background:var(--accent-deep);border-radius:2px;}
 .ebar i.on{background:var(--accent);}
-.cup{width:17px;height:18px;}
+.cup{width:17px;height:18px;fill:none;stroke:var(--accent-deep);}
+.cup.fill{stroke:var(--accent);}
 .hrs{font-size:12px;color:var(--faint);letter-spacing:.06em;}
 .nf{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);}
 .nf .k{font-size:12px;color:var(--muted);width:84px;letter-spacing:.03em;}
@@ -158,6 +160,33 @@ a.tab,a.rm,a.ix-row{color:inherit;text-decoration:none;}
   text-transform:uppercase;color:var(--faint);}
 .hb-fill{flex:1;margin-top:14px;border:1px solid var(--hair);border-radius:11px;
   background-image:repeating-linear-gradient(to bottom,transparent 0 41px,var(--hair) 41px 42px);background-position:0 14px;}
+
+/* clickable calendar day cells + date-strip days (link to daily pages) */
+.cal a.cell{display:block;text-decoration:none;color:var(--muted);}
+.cal a.cell:hover{background:var(--surface);color:var(--accent);}
+.dstrip a{font-size:13px;color:var(--faint);min-width:20px;height:20px;line-height:20px;
+  text-align:center;text-decoration:none;}
+.dstrip a.on{color:var(--bg);background:var(--accent);border-radius:50%;font-weight:600;}
+.dstrip a:hover{color:var(--accent);}
+
+/* ============ YEAR AT A GLANCE ============ */
+.yag{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;flex:1;}
+.yag a{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--hair);
+  border-radius:11px;padding:16px 16px 18px;}
+.yag a:hover{border-color:var(--accent);}
+.yag .ym{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink);margin-bottom:12px;}
+.yag .yg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 2px;margin-top:auto;}
+.yag .yg b{font-size:8px;color:var(--faint);text-align:center;font-weight:500;letter-spacing:.04em;}
+.yag .yg i{font-size:10px;color:var(--muted);text-align:center;font-style:normal;}
+.yag .yg i.dim{opacity:0;}
+
+/* ============ GRATITUDE LOG ============ */
+.grat{margin-top:24px;flex:1;display:flex;flex-direction:column;}
+.grat a.gr{display:flex;align-items:baseline;gap:18px;padding:18px 2px;border-bottom:1px solid var(--hair);
+  text-decoration:none;}
+.grat a.gr:hover .gr-mo{color:var(--accent);}
+.grat .gr-mo{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink);width:140px;flex:none;}
+.grat .gr-ln{flex:1;border-bottom:1px dotted var(--accent2-line);align-self:flex-end;height:0;}
 
 /* ============ NOTES ============ */
 .ptabs{margin-top:20px;display:flex;gap:10px;}

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "python3 -m http.server 5173",
     "start": "python3 -m http.server 5173",
-    "export": "node tools/export.mjs",
-    "pdf": "node tools/pdf.mjs"
+    "export": "node tools/planner.mjs",
+    "guide": "node tools/guide.mjs",
+    "pdf": "node tools/pdf.mjs",
+    "build": "node tools/planner.mjs && node tools/guide.mjs && node tools/pdf.mjs"
   }
 }

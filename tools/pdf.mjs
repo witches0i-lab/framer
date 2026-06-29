@@ -54,11 +54,16 @@ if (!chrome) {
 }
 
 console.log(`Using ${chrome}`);
+
+/* render targets: the planner (per theme) + the user guide */
+const jobs = [
+  ...themes.map((t) => ({ src: join(root, 'export', t, 'goyo-print.html'), out: join(root, 'export', t, 'goyo.pdf'), label: t })),
+  { src: join(root, 'export', 'guide', 'goyo-guide.html'), out: join(root, 'export', 'guide', 'goyo-guide.pdf'), label: 'guide' },
+];
+
 let ok = 0;
-for (const theme of themes) {
-  const src = join(root, 'export', theme, 'goyo-print.html');
-  const out = join(root, 'export', theme, 'goyo.pdf');
-  if (!existsSync(src)) { console.log(`  skip ${theme} (run tools/export.mjs first)`); continue; }
+for (const { src, out, label } of jobs) {
+  if (!existsSync(src)) { console.log(`  skip ${label} (run npm run export / npm run guide first)`); continue; }
   const args = [
     '--headless=new', '--no-sandbox', '--disable-gpu',
     '--no-pdf-header-footer',
@@ -68,7 +73,8 @@ for (const theme of themes) {
     pathToFileURL(src).href,
   ];
   const r = spawnSync(chrome, args, { stdio: 'ignore' });
-  if (r.status === 0 && existsSync(out)) { console.log(`  ✓ ${theme} → export/${theme}/goyo.pdf`); ok++; }
-  else console.log(`  ✗ ${theme} (chrome exit ${r.status})`);
+  const rel = out.slice(root.length + 1);
+  if (r.status === 0 && existsSync(out)) { console.log(`  ✓ ${label} → ${rel}`); ok++; }
+  else console.log(`  ✗ ${label} (chrome exit ${r.status})`);
 }
-console.log(`Rendered ${ok}/${themes.length} PDFs. Verify internal links with docs/link-test.md.`);
+console.log(`Rendered ${ok}/${jobs.length} PDFs. Verify internal links with docs/link-test.md.`);

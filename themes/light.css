@@ -1,0 +1,7 @@
+/* GOYO theme — Light "paper". Link AFTER css/tokens.css to apply. */
+:root{
+  --bg:#f4f1ea; --surface:#ffffff; --line:#ddd6c8; --hair:#e7e1d4;
+  --ink:#2a2722; --muted:#7a756c; --faint:#a8a294;
+  --accent:#5f8c82; --accent-deep:#cfe0db; --accent-line:#d6e3df;
+  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.40); --accent2-fill:rgba(201,141,160,.06);
+}

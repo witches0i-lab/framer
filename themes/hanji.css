@@ -1,0 +1,7 @@
+/* GOYO theme — Warm "hanji". Link AFTER css/tokens.css to apply. */
+:root{
+  --bg:#1a1714; --surface:#23201b; --line:#3a342c; --hair:#2c2823;
+  --ink:#efe7d8; --muted:#9c917f; --faint:#6e655a;
+  --accent:#c08a3e; --accent-deep:#4a3b22; --accent-line:#473b28;
+  --accent2:#a8c0b4; --accent2-line:rgba(168,192,180,.40); --accent2-fill:rgba(168,192,180,.05);
+}

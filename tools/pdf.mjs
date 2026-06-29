@@ -1,0 +1,74 @@
+/* ============================================================
+   GOYO — hyperlinked PDF render  (roadmap 3)
+   Renders each theme's combined print file to a single PDF with
+   internal links preserved (tabs → pages, rail → month, index →
+   sections). Chrome/Chromium's headless print-to-pdf turns same-
+   document #anchors into PDF GoTo links — exactly what GoodNotes
+   and Notability follow.
+
+     node tools/export.mjs     # build export/<theme>/goyo-print.html first
+     node tools/pdf.mjs        # then render → export/<theme>/goyo.pdf
+
+   Dependency-free: it drives a Chromium binary that is already on
+   the machine (no npm install). If none is found it prints the
+   manual fallback (open goyo-print.html → Print → Save as PDF,
+   "Background graphics" ON) and exits cleanly.
+   ============================================================ */
+import { existsSync, readdirSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { spawnSync } from 'node:child_process';
+
+const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+const themes = ['najeon', 'light', 'hanji'];
+
+/* ---- locate a Chromium/Chrome binary, dependency-free ---- */
+function findChrome() {
+  const fromEnv = [process.env.CHROME, process.env.CHROME_PATH, process.env.PUPPETEER_EXECUTABLE_PATH];
+  const known = [
+    '/opt/pw-browsers/chromium', // pre-installed (symlink → chrome)
+    '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable',
+    '/usr/bin/chromium', '/usr/bin/chromium-browser',
+    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    '/Applications/Chromium.app/Contents/MacOS/Chromium',
+  ];
+  // also scan a Playwright browsers dir, if present
+  const pw = process.env.PLAYWRIGHT_BROWSERS_PATH || '/opt/pw-browsers';
+  let scanned = [];
+  try {
+    for (const d of readdirSync(pw)) {
+      if (d.startsWith('chromium')) scanned.push(join(pw, d, 'chrome-linux', 'chrome'));
+    }
+  } catch {}
+  return [...fromEnv, ...known, ...scanned].find((p) => p && existsSync(p));
+}
+
+const chrome = findChrome();
+
+if (!chrome) {
+  console.log('No Chromium/Chrome binary found.');
+  console.log('Manual fallback — for each theme open export/<theme>/goyo-print.html in Chrome,');
+  console.log('  Print → Destination: Save as PDF → "Background graphics" ON → Margins: None → Save.');
+  console.log('Internal links (tabs/rail/index) are preserved by Chrome\'s PDF export.');
+  process.exit(0);
+}
+
+console.log(`Using ${chrome}`);
+let ok = 0;
+for (const theme of themes) {
+  const src = join(root, 'export', theme, 'goyo-print.html');
+  const out = join(root, 'export', theme, 'goyo.pdf');
+  if (!existsSync(src)) { console.log(`  skip ${theme} (run tools/export.mjs first)`); continue; }
+  const args = [
+    '--headless=new', '--no-sandbox', '--disable-gpu',
+    '--no-pdf-header-footer',
+    '--run-all-compositor-stages-before-draw',
+    '--virtual-time-budget=8000',
+    `--print-to-pdf=${out}`,
+    pathToFileURL(src).href,
+  ];
+  const r = spawnSync(chrome, args, { stdio: 'ignore' });
+  if (r.status === 0 && existsSync(out)) { console.log(`  ✓ ${theme} → export/${theme}/goyo.pdf`); ok++; }
+  else console.log(`  ✗ ${theme} (chrome exit ${r.status})`);
+}
+console.log(`Rendered ${ok}/${themes.length} PDFs. Verify internal links with docs/link-test.md.`);

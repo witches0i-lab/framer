@@ -27,8 +27,10 @@ js/medallion.js   procedural najeon cover art (seeded PRNG → SVG into #art)
 js/journal.js     seal + page generators (date strip, calendar, weekly cols, habit grid)
 assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
-tools/export.mjs  print-ready export: one self-contained HTML per page × theme → export/
-export/           generated print-ready output (regenerate via `npm run export`)
+tools/export.mjs  print-ready export: per-page HTML + combined goyo-print.html per theme
+tools/pdf.mjs     render combined files → export/<theme>/goyo.pdf (internal links preserved)
+docs/link-test.md GoodNotes / Notability hyperlink test checklist
+export/           generated output (regenerate via `npm run export && npm run pdf`)
 ```
 
 ## Design system rules (important)
@@ -56,8 +58,13 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
    ✅ `npm run export` (`tools/export.mjs`) → `export/<theme>/NN-name.html` (7 pages × 3 themes),
    each self-contained (inlined CSS/JS, no chrome) at 1080×1440. `export/index.html` is a contact
    sheet. Dependency-free (Node built-ins only).
-3. **Hyperlinked-PDF pipeline** — wire nav as anchors (tabs→pages, rail→months, index→sections),
-   render to PDF preserving internal links, and a GoodNotes link-test checklist.
+3. ~~**Hyperlinked-PDF pipeline** — wire nav as anchors (tabs→pages, rail→months, index→sections),
+   render to PDF preserving internal links, and a GoodNotes link-test checklist.~~ ✅ Each `.page`
+   has `id="p-<slug>"`; tabs/rail/index are `<a href="#p-…">`. `npm run export` emits a combined
+   `goyo-print.html` per theme; `npm run pdf` drives a pre-installed Chromium to render
+   `goyo.pdf` with internal links preserved (~113 link annots / 7 pages). Per-page export files
+   rewrite anchors to sibling `.html`. Test with `docs/link-test.md`. Rail → single Monthly page
+   until roadmap 4 adds 12 monthlies.
 4. New pages: weekly reflection, year-at-a-glance, gratitude log.
 
 ## Conventions

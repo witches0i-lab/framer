@@ -40,7 +40,7 @@ function extractPages(src) {
   let m;
   while ((m = re.exec(src))) {
     const num = m[1], name = m[2].trim();
-    const start = src.indexOf('<div class="page">', m.index);
+    const start = src.indexOf('<div class="page"', m.index);
     if (start === -1) continue;
     pages.push({ num, name, markup: sliceElement(src, start) });
   }
@@ -71,21 +71,20 @@ body{display:block;min-height:0;}
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-function pageDoc(theme, themeCss, page) {
-  const css = [tokens, base, themeCss, printCss].filter(Boolean).join('\n');
+function doc(title, css, body) {
   return `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOYO · ${page.num} ${page.name} · ${theme}</title>
+<title>${title}</title>
 ${fonts}
 <style>
 ${css}
 </style>
 </head>
 <body>
-${page.markup}
+${body}
 <script>
 ${medallion}
 ${journal}
@@ -95,26 +94,45 @@ ${journal}
 `;
 }
 
+/* per-page file: in-doc #p-x anchors can't resolve (single page), so
+   rewrite them to the sibling .html files for click-through navigation. */
+function rewriteAnchors(markup, idToFile) {
+  return markup.replace(/href="#(p-[a-z]+)"/g, (m, id) => idToFile[id] ? `href="${idToFile[id]}"` : m);
+}
+
 /* ---- build ---- */
 const pages = extractPages(html);
 const outRoot = join(root, 'export');
 rmSync(outRoot, { recursive: true, force: true });
 
+/* page-id (#p-slug) -> per-page filename, for sibling-link rewriting */
+const idToFile = {};
+for (const p of pages) idToFile['p-' + slug(p.name)] = `${p.num}-${slug(p.name)}.html`;
+
+/* combined-print stylesheet: stack every page, one PDF page each, keep #anchors */
+const combinedCss = printCss + `\n.page{break-after:page;page-break-after:always;}\n.page:last-of-type{break-after:auto;}\n`;
+
 const manifest = {};
 for (const [theme, themeCss] of Object.entries(themes)) {
   mkdirSync(join(outRoot, theme), { recursive: true });
   manifest[theme] = [];
+  const pageCss = [tokens, base, themeCss, printCss].filter(Boolean).join('\n');
   for (const page of pages) {
     const file = `${page.num}-${slug(page.name)}.html`;
-    writeFileSync(join(outRoot, theme, file), pageDoc(theme, themeCss, page));
+    const body = rewriteAnchors(page.markup, idToFile);
+    writeFileSync(join(outRoot, theme, file), doc(`GOYO · ${page.num} ${page.name} · ${theme}`, pageCss, body));
     manifest[theme].push({ file, name: page.name, num: page.num });
   }
+  /* combined hyperlinked file → source for the PDF (internal #anchors preserved) */
+  const allCss = [tokens, base, themeCss, combinedCss].filter(Boolean).join('\n');
+  const allBody = pages.map((p) => p.markup).join('\n');
+  writeFileSync(join(outRoot, theme, 'goyo-print.html'), doc(`GOYO — ${theme} (print)`, allCss, allBody));
 }
 
 /* ---- contact-sheet index for quick review ---- */
 const links = Object.entries(manifest).map(([theme, list]) => {
   const items = list.map((p) => `<li><a href="${theme}/${p.file}">${p.num} · ${p.name}</a></li>`).join('');
-  return `<section><h2>${theme}</h2><ul>${items}</ul></section>`;
+  return `<section><h2>${theme}</h2><ul><li><a href="${theme}/goyo-print.html"><b>▸ Combined (print → PDF)</b></a></li>${items}</ul></section>`;
 }).join('\n');
 
 writeFileSync(join(outRoot, 'index.html'), `<!doctype html>
@@ -131,6 +149,7 @@ ${links}
 </body></html>
 `);
 
-const count = pages.length * Object.keys(themes).length;
-console.log(`Exported ${count} files → export/  (${pages.length} pages × ${Object.keys(themes).length} themes)`);
-for (const p of pages) console.log(`  · ${p.num} ${p.name}`);
+const nThemes = Object.keys(themes).length;
+const count = pages.length * nThemes + nThemes; // per-page + combined
+console.log(`Exported ${count} files → export/  (${pages.length} pages × ${nThemes} themes + ${nThemes} combined)`);
+console.log(`Next: node tools/pdf.mjs   (render export/<theme>/goyo-print.html → goyo.pdf, internal links preserved)`);

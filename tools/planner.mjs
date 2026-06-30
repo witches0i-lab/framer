@@ -271,7 +271,8 @@ writeFileSync(join(root, 'planner.html'), doc('GOYO — planner', '', body, { sw
 /* contact sheet */
 const sheet = Object.keys(themes).map((t) =>
   `<section><h2>${t}</h2><ul><li><a href="${t}/goyo-print.html">Combined HTML (print → PDF)</a></li>`
-  + `<li><a href="${t}/goyo.pdf">goyo.pdf</a></li></ul></section>`).join('\n');
+  + `<li><a href="${t}/goyo.pdf">goyo.pdf (planner)</a></li>`
+  + `<li><a href="${t}/goyo-guide.pdf">goyo-guide.pdf</a></li></ul></section>`).join('\n');
 writeFileSync(join(outRoot, 'index.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>GOYO — exports</title><style>
 body{font:14px/1.6 system-ui,sans-serif;background:#14181a;color:#e9e6df;margin:0;padding:40px;}

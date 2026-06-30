@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOYO — User guide</title>
+<title>GOYO — User guide (hanji)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -76,6 +76,14 @@
 /* [Type swap] ------------------------------------------------------
 :root{ --serif:'Cormorant Garamond',serif; --sans:'Manrope',sans-serif; }
 */
+
+/* GOYO theme — Warm "hanji". Link AFTER css/tokens.css to apply. */
+:root{
+  --bg:#1a1714; --surface:#23201b; --line:#3a342c; --hair:#2c2823;
+  --ink:#efe7d8; --muted:#9c917f; --faint:#6e655a;
+  --accent:#c08a3e; --accent-deep:#4a3b22; --accent-line:#473b28;
+  --accent2:#a8c0b4; --accent2-line:rgba(168,192,180,.40); --accent2-fill:rgba(168,192,180,.05);
+}
 
 /* =========================================================================
    GOYO — BASE LAYOUT / DESIGN SYSTEM
@@ -293,7 +301,7 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 html,body{margin:0;padding:0;background:var(--bg);}
 body{display:block;}
 .page{margin:0 auto;break-after:page;page-break-after:always;background:
-  radial-gradient(120% 80% at 50% 28%,#16191b 0%,#0c0e0f 62%,#080909 100%);}
+  radial-gradient(120% 80% at 50% 28%,var(--surface) 0%,var(--bg) 60%);}
 .page:last-of-type{break-after:auto;}
 @page{size:1080px 1440px;margin:0;}
 @media print{.page{box-shadow:none;}}

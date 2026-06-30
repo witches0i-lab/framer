@@ -56,10 +56,10 @@ if (!chrome) {
 console.log(`Using ${chrome}`);
 
 /* render targets: the planner (per theme) + the user guide */
-const jobs = [
-  ...themes.map((t) => ({ src: join(root, 'export', t, 'goyo-print.html'), out: join(root, 'export', t, 'goyo.pdf'), label: t })),
-  { src: join(root, 'export', 'guide', 'goyo-guide.html'), out: join(root, 'export', 'guide', 'goyo-guide.pdf'), label: 'guide' },
-];
+const jobs = themes.flatMap((t) => [
+  { src: join(root, 'export', t, 'goyo-print.html'), out: join(root, 'export', t, 'goyo.pdf'), label: `${t} planner` },
+  { src: join(root, 'export', t, 'goyo-guide.html'), out: join(root, 'export', t, 'goyo-guide.pdf'), label: `${t} guide` },
+]);
 
 let ok = 0;
 for (const { src, out, label } of jobs) {

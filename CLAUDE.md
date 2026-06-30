@@ -11,8 +11,10 @@ najeon pink (secondary) on dark ink, with a procedural najeon medallion on the c
 The runtime journal is a **plain static site** — no framework, no dependencies. A tiny
 dependency-free **build** (Node built-ins only) generates the sellable product.
 
-**The Etsy product is two files:** the **planner** (`goyo.pdf` — a full hyperlinked year)
-and the **user guide** (`goyo-guide.pdf` — how to import & use it).
+**The Etsy product is two files per colourway:** the **planner** (`goyo.pdf` — a full hyperlinked
+year) and the **user guide** (`goyo-guide.pdf`). Both are generated for each theme
+(najeon / light / hanji) into `export/<theme>/`. **najeon is the GOYO base**; light & hanji change
+only the colourway tokens — layout, anchors and text positions are identical across all three.
 
 ## Run / preview
 ```bash
@@ -36,7 +38,7 @@ assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
 tools/planner.mjs PRODUCT build: full year → cover, year, 12 months, 365 days, habits, weekly,
                   gratitude, notes; all internal links wired. → export/<theme>/goyo-print.html + planner.html
-tools/guide.mjs   user-guide build (welcome, navigation, import, reuse, thanks) → export/guide/goyo-guide.html
+tools/guide.mjs   user-guide build, one per theme (same layout, colourway only) → export/<theme>/goyo-guide.html
 tools/pdf.mjs     render every goyo-print.html + the guide → PDF (internal links preserved)
 docs/link-test.md GoodNotes / Notability hyperlink test checklist
 export/           generated output (regenerate via `npm run build`; large goyo.pdf is gitignored)

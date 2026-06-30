@@ -20,6 +20,9 @@ const tokens = read('css/tokens.css');
 const base   = read('css/base.css');
 const html   = read('index.html');
 const fonts  = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
+/* same layout/anchors/text everywhere — only the colourway tokens change.
+   najeon ('') is the GOYO base; light/hanji are overrides. */
+const themes = { najeon: '', light: read('themes/light.css'), hanji: read('themes/hanji.css') };
 
 const SEAL = '<div class="seal"><svg viewBox="0 0 52 16">'
   + '<ellipse cx="6" cy="9" rx="5" ry="3" fill="#74a89f" opacity=".9"/>'
@@ -112,7 +115,7 @@ const guideCss = `
 html,body{margin:0;padding:0;background:var(--bg);}
 body{display:block;}
 .page{margin:0 auto;break-after:page;page-break-after:always;background:
-  radial-gradient(120% 80% at 50% 28%,#16191b 0%,#0c0e0f 62%,#080909 100%);}
+  radial-gradient(120% 80% at 50% 28%,var(--surface) 0%,var(--bg) 60%);}
 .page:last-of-type{break-after:auto;}
 @page{size:1080px 1440px;margin:0;}
 @media print{.page{box-shadow:none;}}
@@ -153,17 +156,19 @@ body{display:block;}
   padding-top:24px;font-size:14px;letter-spacing:.08em;color:var(--faint);}
 `;
 
-const css = [fontFace, tokens, base, guideCss].join('\n');
-const out = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+const body = pages.join('\n');
+for (const [theme, themeCss] of Object.entries(themes)) {
+  const css = [fontFace, tokens, themeCss, base, guideCss].filter(Boolean).join('\n');
+  const out = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GOYO — User guide</title>
+<title>GOYO — User guide (${theme})</title>
 ${fonts}
 <style>${css}</style></head><body>
-${pages.join('\n')}
+${body}
 </body></html>
 `;
-
-mkdirSync(join(root, 'export', 'guide'), { recursive: true });
-writeFileSync(join(root, 'export', 'guide', 'goyo-guide.html'), out);
-console.log(`Built user guide (${pages.length} pages) → export/guide/goyo-guide.html`);
-console.log(`Next: node tools/pdf.mjs   → export/guide/goyo-guide.pdf`);
+  mkdirSync(join(root, 'export', theme), { recursive: true });
+  writeFileSync(join(root, 'export', theme, 'goyo-guide.html'), out);
+}
+console.log(`Built user guide (${pages.length} pages × ${Object.keys(themes).length} themes) → export/<theme>/goyo-guide.html`);
+console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo-guide.pdf`);

@@ -46,18 +46,19 @@ const dId = (m, d) => `p-d${p2(m)}${p2(d)}`;
 const hId = (m) => `p-h${p2(m)}`;
 const nId = (m) => `p-n${p2(m)}`;
 
-/* ---- mood faces (outline SVG: happy → sad, blank for the buyer to mark) ---- */
-const MOUTHS = [
-  'M8 13.2 Q12 18 16 13.2',     // very happy
-  'M8.5 14 Q12 16.4 15.5 14',   // happy
-  'M8.4 14.6 H15.6',            // neutral
-  'M8 15.2 Q12 12.6 16 15.2',   // sad
-  'M8 15.6 Q12 11.4 16 15.6',   // very sad
+/* ---- mood faces (5-step scale, clearly distinct: very happy → very sad) ---- */
+const DOT_EYES = '<circle class="eye" cx="9" cy="10.3" r="1.05"/><circle class="eye" cx="15" cy="10.3" r="1.05"/>';
+const ARC_EYES = '<path class="ft" d="M8 10.6 Q9.3 9 10.6 10.6"/><path class="ft" d="M13.4 10.6 Q14.7 9 16 10.6"/>';
+const MOODS = [
+  { eyes: ARC_EYES, mouth: 'M6.8 12.6 Q12 20 17.2 12.6' },   // very happy (grin)
+  { eyes: DOT_EYES, mouth: 'M8.4 13.6 Q12 16.4 15.6 13.6' }, // happy
+  { eyes: DOT_EYES, mouth: 'M8.4 14 H15.6' },                // neutral
+  { eyes: DOT_EYES, mouth: 'M8.4 14.8 Q12 12.2 15.6 14.8' }, // sad
+  { eyes: DOT_EYES, mouth: 'M6.8 15.6 Q12 9.4 17.2 15.6' },  // very sad
 ];
-const moodFaces = () => MOUTHS.map((mouth) =>
-  `<svg class="moodface" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>`
-  + `<circle class="eye" cx="9" cy="10" r="1"/><circle class="eye" cx="15" cy="10" r="1"/>`
-  + `<path d="${mouth}"/></svg>`).join('');
+const moodFaces = () => MOODS.map((f) =>
+  `<svg class="moodface" viewBox="0 0 24 24"><circle class="fc" cx="12" cy="12" r="9.2"/>`
+  + `${f.eyes}<path class="ft" d="${f.mouth}"/></svg>`).join('');
 
 /* ---- shared chrome ---- */
 const SEAL = '<div class="seal"><svg viewBox="0 0 52 16">'
@@ -138,13 +139,13 @@ function dailyPage(m, d) {
     <div class="sec">Overall well-being</div>
     <div class="row"><div class="k">Mood</div><div class="v"><div class="moods">${moodFaces()}</div></div></div>
     <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i style="height:9px"></i><i style="height:13px"></i><i style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
-    <div class="row"><div class="k">Sleep</div><div class="v"><div class="sleepln"></div><span class="hrs">hrs slept</span></div></div>
+    <div class="row"><div class="k">Sleep</div><div class="v"><span class="hrs">hrs slept</span></div></div>
     <div class="row"><div class="k">Water</div><div class="v">${cups}</div></div>
     <div class="sec">Nutrition check</div>
-    <div class="nf"><div class="k">Breakfast</div><div class="fill"></div></div>
-    <div class="nf"><div class="k">Lunch</div><div class="fill"></div></div>
-    <div class="nf"><div class="k">Dinner</div><div class="fill"></div></div>
-    <div class="nf"><div class="k">Snack</div><div class="fill"></div></div>
+    <div class="nf"><div class="k">Breakfast</div></div>
+    <div class="nf"><div class="k">Lunch</div></div>
+    <div class="nf"><div class="k">Dinner</div></div>
+    <div class="nf"><div class="k">Snack</div></div>
     <div class="lbl" style="margin-top:20px">Today's act of self-care</div><div class="box" style="height:76px"></div>
     <div class="lbl" style="margin-top:16px;color:var(--accent2)">Grateful for</div>
     <div class="box" style="flex:1;min-height:96px;border-color:var(--accent2-line);background:var(--accent2-fill)"></div></div>`;

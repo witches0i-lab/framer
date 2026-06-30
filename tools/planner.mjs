@@ -171,7 +171,7 @@ function habitsPage(m) {
   const inner = `${tabs(hId(m), m)}${rail(m)}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">Habits · ${MONTHS[m - 1]}</div><h1 class="h1">Gentle <em>habits</em></h1></div>
       <div class="pmeta">PROGRESS,<br>NOT PERFECTION</div></div>
-    <div class="hr pink spaced"></div>
+    <div class="hr white spaced"></div>
     <div class="hb">${head}${rows}</div>
     <div class="sec" style="margin-top:24px">Notes on this month</div><div class="hb-fill"></div></div>`;
   return page(hId(m), inner);
@@ -183,7 +183,7 @@ function weeklyPage() {
   const inner = `${tabs('p-weekly')}${rail()}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">Weekly</div><h1 class="h1">Week <em>of</em></h1></div>
       <div class="pmeta">___ / ___ — ___ / ___<br>ONE THING THAT MATTERS ____</div></div>
-    <div class="hr pink spaced"></div><div class="wk">${cols}</div></div>`;
+    <div class="hr white spaced"></div><div class="wk">${cols}</div></div>`;
   return page('p-weekly', inner);
 }
 
@@ -193,7 +193,7 @@ function gratitudePage() {
   const inner = `${tabs('p-grat')}${rail()}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">A year of thanks</div><h1 class="h1">Gratitude <em>log</em></h1></div>
       <div class="pmeta">ONE LINE,<br>EACH MONTH</div></div>
-    <div class="hr pink spaced"></div><div class="grat">${rows}</div></div>`;
+    <div class="hr white spaced"></div><div class="grat">${rows}</div></div>`;
   return page('p-grat', inner);
 }
 

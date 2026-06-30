@@ -44,8 +44,9 @@ const welcome = `<div class="page"><div class="gpad g-welcome">
   <div class="g-tag">a quiet daily ritual</div>
   <p class="g-lead">Thank you for your purchase — and for supporting a small studio.
     GOYO is a hyperlinked wellness journal for <b>GoodNotes</b> and <b>Notability</b>:
-    an <b>undated</b> full year — a page for <b>every day</b> (366, leap-year ready), twelve monthly calendars, habit trackers,
-    a weekly reflection and a gratitude log — every page a tap away.</p>
+    an <b>undated</b> full year — a page for <b>every day</b> (366, leap-year ready), twelve monthly
+    calendars each with their own notes page, habit trackers, a weekly reflection and a gratitude
+    log — every page a tap away.</p>
   <div class="g-rule"><span>STILLNESS, ONE PAGE AT A TIME</span><span>UNDATED · REUSE EVERY YEAR</span></div>
 </div></div>`;
 
@@ -57,6 +58,7 @@ const howItWorks = gpage('How it works', 'Tap to travel',
     ['Year page', 'Tap any month to open its calendar.'],
     ['Monthly calendar', 'Tap any date to open that day’s page.'],
     ['Daily page', 'Tap the large date number (or the month name) to return to the month.'],
+    ['Monthly notes', 'On the year page, tap a month’s “notes” chip to open its notes page.'],
     ['Top tabs', 'Year · Weekly · Habits · Gratitude · Notes — the main sections, everywhere.'],
   ]),
   'Tip: in GoodNotes, make sure you are in <b>reading / hand</b> mode (not the pen) so a tap follows the link instead of drawing.');

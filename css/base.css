@@ -54,12 +54,15 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 
 /* ---- shared components -------------------------------------------------- */
 .eyebrow{font-size:var(--t-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent);}
+.eyebrow a{color:inherit;text-decoration:none;}
+.eyebrow a:hover{color:var(--ink);}
 .h1{font-family:var(--serif);font-weight:300;font-size:var(--t-h1);color:var(--ink);margin:8px 0 0;line-height:1;}
 .h1 em{font-style:italic;color:var(--accent);}
 .phead{display:flex;justify-content:space-between;align-items:flex-end;}
 .pmeta{font-size:var(--t-meta);letter-spacing:.06em;color:var(--muted);text-align:right;line-height:1.8;}
 .hr{height:1px;background:var(--hair);}
 .hr.pink{background:var(--accent2);opacity:.5;}
+.hr.white{background:var(--ink);opacity:.55;}
 .hr.spaced{margin:18px 0 4px;}
 .lbl{font-size:var(--t-label);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
 .sec{font-size:var(--t-label);letter-spacing:var(--ls-label);text-transform:uppercase;color:var(--accent);
@@ -68,7 +71,18 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--hair);}
 .row .k{font-size:var(--t-label);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:64px;flex:none;}
 .row .v{flex:1;display:flex;justify-content:flex-end;align-items:center;gap:8px;}
-.fill{flex:1;border-bottom:1px solid var(--hair);}
+.fill{flex:1;border-bottom:1px solid var(--line);}
+
+/* daily left column — brighter labels for readability (was too dim on dark) */
+.dcol-l .lbl{color:var(--ink);opacity:.92;}
+.dcol-l .row .k,.dcol-l .nf .k{color:var(--ink);opacity:.88;}
+.wxr svg{stroke:var(--ink);opacity:.78;}
+/* mood scale: outline faces, blank for the buyer to mark */
+.moods{display:flex;gap:11px;align-items:center;}
+.moodface{width:27px;height:27px;fill:none;stroke:var(--ink);stroke-width:1.3;opacity:.8;}
+.moodface .eye{fill:var(--ink);stroke:none;}
+/* sleep: a clear writing line + unit */
+.sleepln{flex:1;height:0;align-self:flex-end;margin-bottom:4px;border-bottom:1px solid var(--muted);}
 
 /* ============ COVER ============ */
 .cover{height:100%;padding:74px 84px 80px;display:flex;flex-direction:column;
@@ -103,9 +117,11 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .cal .cell{height:140px;padding:11px 12px;font-size:14px;color:var(--muted);
   border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);}
 .cal .cell.dim{color:var(--faint);opacity:.4;}
-.m-foot{margin-top:22px;display:grid;grid-template-columns:1.7fr 1fr;gap:var(--gap);}
+.m-foot{margin-top:22px;flex:1;display:grid;grid-template-columns:1.7fr 1fr;gap:var(--gap);}
+.m-col{display:flex;flex-direction:column;}
 .m-col .lbl{margin-bottom:14px;}
-.m-col .ln{height:1px;background:var(--hair);margin:20px 0;}
+.m-col .lines{flex:1;border-top:1px solid var(--hair);
+  background-image:repeating-linear-gradient(to bottom,transparent 0 33px,var(--hair) 33px 34px);}
 
 /* ============ WEEKLY ============ */
 .wk{margin-top:20px;flex:1;display:grid;grid-template-columns:repeat(7,1fr);
@@ -171,14 +187,16 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 
 /* ============ YEAR AT A GLANCE ============ */
 .yag{margin-top:26px;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;flex:1;}
-.yag a{display:flex;flex-direction:column;text-decoration:none;border:1px solid var(--hair);
-  border-radius:11px;padding:16px 16px 18px;}
-.yag a:hover{border-color:var(--accent);}
-.yag .ym{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink);margin-bottom:12px;}
-.yag .yg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 2px;margin-top:auto;}
-.yag .yg b{font-size:8px;color:var(--faint);text-align:center;font-weight:500;letter-spacing:.04em;}
-.yag .yg i{font-size:10px;color:var(--muted);text-align:center;font-style:normal;}
-.yag .yg i.dim{opacity:0;}
+.ycard{display:flex;flex-direction:column;border:1px solid var(--hair);border-radius:11px;padding:16px 16px 18px;}
+.ycard:hover{border-color:var(--accent);}
+.ycard .ym{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--ink);text-decoration:none;}
+.ycard .ynotes{align-self:flex-start;margin-top:9px;padding:5px 13px;border:1px solid var(--accent-line);
+  border-radius:999px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+  text-decoration:none;}
+.ycard .ynotes:hover{background:var(--accent);color:var(--bg);border-color:var(--accent);}
+.ycard .yg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 2px;margin-top:auto;
+  text-decoration:none;}
+.ycard .yg i{font-size:10px;color:var(--muted);text-align:center;font-style:normal;}
 
 /* ============ GRATITUDE LOG ============ */
 .grat{margin-top:24px;flex:1;display:flex;flex-direction:column;}

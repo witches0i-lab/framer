@@ -44,6 +44,20 @@ const dim = (m) => MLEN[m - 1];                                        // days i
 const mId = (m) => `p-m${p2(m)}`;
 const dId = (m, d) => `p-d${p2(m)}${p2(d)}`;
 const hId = (m) => `p-h${p2(m)}`;
+const nId = (m) => `p-n${p2(m)}`;
+
+/* ---- mood faces (outline SVG: happy → sad, blank for the buyer to mark) ---- */
+const MOUTHS = [
+  'M8 13.2 Q12 18 16 13.2',     // very happy
+  'M8.5 14 Q12 16.4 15.5 14',   // happy
+  'M8.4 14.6 H15.6',            // neutral
+  'M8 15.2 Q12 12.6 16 15.2',   // sad
+  'M8 15.6 Q12 11.4 16 15.6',   // very sad
+];
+const moodFaces = () => MOUTHS.map((mouth) =>
+  `<svg class="moodface" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>`
+  + `<circle class="eye" cx="9" cy="10" r="1"/><circle class="eye" cx="15" cy="10" r="1"/>`
+  + `<path d="${mouth}"/></svg>`).join('');
 
 /* ---- shared chrome ---- */
 const SEAL = '<div class="seal"><svg viewBox="0 0 52 16">'
@@ -73,7 +87,10 @@ function yearPage() {
     const m = i + 1, n = dim(m);
     let cells = '';
     for (let d = 1; d <= n; d++) cells += `<i>${d}</i>`;
-    return `<a href="#${mId(m)}"><div class="ym">${name}</div><div class="yg">${cells}</div></a>`;
+    return `<div class="ycard">
+      <a class="ym" href="#${mId(m)}">${name}</a>
+      <a class="ynotes" href="#${nId(m)}">${name} notes</a>
+      <a class="yg" href="#${mId(m)}">${cells}</a></div>`;
   }).join('');
   const inner = `${tabs('p-year')}${rail()}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">At a glance</div><h1 class="h1">Your <em>year</em></h1></div>
@@ -92,14 +109,14 @@ function monthlyPage(m) {
     else cal += `<a class="cell" href="#${dId(m, day)}">${day}</a>`;
   }
   const inner = `${tabs(mId(m), m)}${rail(m)}<div class="content">${SEAL}
-    <div class="phead"><div><div class="eyebrow"><a class="rm" href="#p-year">‹ Year</a> · Month ${p2(m)} / 12</div>
+    <div class="phead"><div><div class="eyebrow"><a href="#p-year">‹ Year</a> · Month ${p2(m)} / 12</div>
       <h1 class="h1">${MONTHS[m - 1]}</h1></div>
       <div class="pmeta">INTENTION ____________<br>FOCUS ____________</div></div>
-    <div class="hr pink spaced"></div>
+    <div class="hr white spaced"></div>
     <div class="cal">${cal}</div>
     <div class="m-foot">
-      <div class="m-col"><div class="lbl">This month I want to feel</div><div class="ln"></div><div class="ln"></div></div>
-      <div class="m-col"><div class="lbl">Small joys</div><div class="ln"></div><div class="ln"></div></div>
+      <div class="m-col"><div class="lbl">This month I want to feel</div><div class="lines"></div></div>
+      <div class="m-col"><div class="lbl">Small joys</div><div class="lines"></div></div>
     </div></div>`;
   return page(mId(m), inner);
 }
@@ -119,9 +136,9 @@ function dailyPage(m, d) {
     <div class="lbl">Today's affirmation</div><div class="box" style="height:92px"></div>
     <div class="lbl" style="margin-top:18px">Today's weather</div>${wx}
     <div class="sec">Overall well-being</div>
-    <div class="row"><div class="k">Mood</div><div class="v"><div class="face">☻</div><div class="face">☺</div><div class="face">·</div><div class="face">·</div><div class="face">☹</div></div></div>
+    <div class="row"><div class="k">Mood</div><div class="v"><div class="moods">${moodFaces()}</div></div></div>
     <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i style="height:9px"></i><i style="height:13px"></i><i style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
-    <div class="row"><div class="k">Sleep</div><div class="v"><div class="fill"></div><span class="hrs">hrs</span></div></div>
+    <div class="row"><div class="k">Sleep</div><div class="v"><div class="sleepln"></div><span class="hrs">hrs slept</span></div></div>
     <div class="row"><div class="k">Water</div><div class="v">${cups}</div></div>
     <div class="sec">Nutrition check</div>
     <div class="nf"><div class="k">Breakfast</div><div class="fill"></div></div>
@@ -185,6 +202,16 @@ function notesPage() {
   return page('p-notes', inner);
 }
 
+function monthNotesPage(m) {
+  const inner = `${tabs('', m)}${rail(m)}<div class="content">${SEAL}
+    <div class="phead"><div><div class="eyebrow"><a href="#${mId(m)}">‹ ${MONTHS[m - 1]}</a> · Notes</div>
+      <h1 class="h1">${MONTHS[m - 1]} <em>notes</em></h1></div>
+      <div class="pmeta">THOUGHTS,<br>LISTS, IDEAS</div></div>
+    <div class="hr white spaced"></div>
+    <div class="nt"></div></div>`;
+  return page(nId(m), inner);
+}
+
 /* ---- assemble the year in reading order ---- */
 function buildPages() {
   const out = [coverPage(), yearPage()];
@@ -192,6 +219,7 @@ function buildPages() {
     out.push(monthlyPage(m));
     for (let d = 1; d <= dim(m); d++) out.push(dailyPage(m, d));
     out.push(habitsPage(m));
+    out.push(monthNotesPage(m));
   }
   out.push(weeklyPage(), gratitudePage(), notesPage());
   return out;

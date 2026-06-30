@@ -77,9 +77,11 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
 4. ~~New pages: weekly reflection, year-at-a-glance, gratitude log.~~ ✅ Plus the big scale-up:
    `tools/planner.mjs` generates the **full undated year** — cover, year-at-a-glance, 12 monthly
    pages, **a page for every day** (366 incl. Feb 29 so it works in leap years), 12 monthly habit
-   grids, 12 per-month notes pages, weekly reflection, gratitude log, notes (407 pages). **No year, no weekday is printed**
-   (it is undated — reuse every year; `MLEN` fixes month lengths). Every nav is wired: rail JAN–DEC
-   → the 12 months everywhere, year → months, calendar day → that day, day → back to its month
+   grids, 12 per-month notes pages, and a gratitude log as the final page. **No year, no weekday is
+   printed** (it is undated — reuse every year; `MLEN` fixes month lengths). Top tabs are
+   **Year · Habits · Notes · Gratitude**; Habits/Notes are month-contextual (this month's pages),
+   Gratitude is last. Every nav is wired: rail JAN–DEC → the 12 months everywhere, year → months
+   (+ a per-month notes chip), calendar day → that day, day → back to its month
    (~19k link annotations / PDF). `tools/guide.mjs` builds the companion user guide. The 7-page
    `index.html` remains the hand-authored design sample.
 

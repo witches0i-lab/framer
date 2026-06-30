@@ -70,7 +70,8 @@ const SEAL = '<div class="seal"><svg viewBox="0 0 52 16">'
   + '<circle cx="44" cy="7" r="4" fill="#efe4cf" opacity=".85"/></svg></div>';
 
 function tabs(activeId, ctxMonth = 1) {
-  const items = [['Year','p-year'],['Weekly','p-weekly'],['Habits',hId(ctxMonth)],['Gratitude','p-grat'],['Notes','p-notes']];
+  // Habits & Notes are month-contextual (this month's pages); Gratitude is the last page.
+  const items = [['Year','p-year'],['Habits',hId(ctxMonth)],['Notes',nId(ctxMonth)],['Gratitude','p-grat']];
   return '<div class="tabs">' + items.map(([label, id]) =>
     `<a class="tab${id === activeId ? ' on' : ''}" href="#${id}">${label}</a>`).join('') + '</div>';
 }
@@ -177,16 +178,6 @@ function habitsPage(m) {
   return page(hId(m), inner);
 }
 
-function weeklyPage() {
-  const cols = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((x) =>
-    `<div class="col"><div class="ch"><div class="cw">${x}</div><div class="cd">—</div></div><div class="cl"></div></div>`).join('');
-  const inner = `${tabs('p-weekly')}${rail()}<div class="content">${SEAL}
-    <div class="phead"><div><div class="eyebrow">Weekly</div><h1 class="h1">Week <em>of</em></h1></div>
-      <div class="pmeta">___ / ___ — ___ / ___<br>ONE THING THAT MATTERS ____</div></div>
-    <div class="hr white spaced"></div><div class="wk">${cols}</div></div>`;
-  return page('p-weekly', inner);
-}
-
 function gratitudePage() {
   const rows = MONTHS.map((name, i) =>
     `<a class="gr" href="#${mId(i + 1)}"><div class="gr-mo">${name}</div></a>`).join('');
@@ -197,16 +188,8 @@ function gratitudePage() {
   return page('p-grat', inner);
 }
 
-function notesPage() {
-  const inner = `${tabs('p-notes')}${rail()}<div class="content">${SEAL}
-    <div class="phead"><div><div class="eyebrow">Free space</div><h1 class="h1">Notes</h1></div></div>
-    <div class="ptabs"><div class="ptab on">Dotted</div><div class="ptab">Lined</div><div class="ptab">Grid</div><div class="ptab">Blank</div></div>
-    <div class="nt"></div></div>`;
-  return page('p-notes', inner);
-}
-
 function monthNotesPage(m) {
-  const inner = `${tabs('', m)}${rail(m)}<div class="content">${SEAL}
+  const inner = `${tabs(nId(m), m)}${rail(m)}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow"><a href="#${mId(m)}">‹ ${MONTHS[m - 1]}</a> · Notes</div>
       <h1 class="h1">${MONTHS[m - 1]} <em>notes</em></h1></div>
       <div class="pmeta">THOUGHTS,<br>LISTS, IDEAS</div></div>
@@ -224,7 +207,7 @@ function buildPages() {
     out.push(habitsPage(m));
     out.push(monthNotesPage(m));
   }
-  out.push(weeklyPage(), gratitudePage(), notesPage());
+  out.push(gratitudePage());   // very last page
   return out;
 }
 

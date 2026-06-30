@@ -21,7 +21,7 @@
   --moon:#efe4cf;
 
   /* ---- type ------------------------------------------------------------- */
-  --serif:'Fraunces',Georgia,serif;     /* display only      */
+  --serif:'Bodoni Moda',Georgia,serif;  /* display only      */
   --sans:'Inter',system-ui,sans-serif;  /* everything else   */
   --t-num:60px;          /* focal numeral / month           */
   --t-h1:38px;           /* page title                      */

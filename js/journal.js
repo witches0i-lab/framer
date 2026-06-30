@@ -13,8 +13,10 @@
   var ds=document.getElementById('dstrip');
   if(ds){var h='';for(var d=1;d<=31;d++){h+='<span'+(d===6?' class="on"':'')+'>'+d+'</span>';}ds.innerHTML=h;}
   var cups=document.getElementById('cups');
-  if(cups){var c='';for(var i=0;i<7;i++){
-    c+='<svg class="cup" viewBox="0 0 20 22"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>';}cups.innerHTML=c;}
+  if(cups){var cup='<svg class="cup" viewBox="0 0 24 26">'
+    +'<path class="water" d="M6.75 13 Q9 11.4 12 13 Q15 14.6 17.25 13 L16.9 22.9 Q16.85 23.5 16.3 23.5 H7.7 Q7.15 23.5 7.1 22.9 Z"/>'
+    +'<path class="glass" d="M5 3 H19 L17.4 23 Q17.3 24 16.3 24 H7.7 Q6.7 24 6.6 23 Z"/></svg>';
+    var c='';for(var i=0;i<7;i++){c+=cup;}cups.innerHTML=c;}
 })();
 
 /* ---- monthly calendar grid ---- */

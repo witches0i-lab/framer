@@ -77,12 +77,9 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .dcol-l .lbl{color:var(--ink);opacity:.92;}
 .dcol-l .row .k,.dcol-l .nf .k{color:var(--ink);opacity:.88;}
 .wxr svg{stroke:var(--ink);opacity:.78;}
-/* mood scale: 5 distinct faces (very happy → very sad), buyer circles one */
-.moods{display:flex;gap:13px;align-items:center;}
-.moodface{width:30px;height:30px;}
-.moodface .fc{fill:var(--surface);stroke:var(--muted);stroke-width:1.1;}
-.moodface .ft{fill:none;stroke:var(--ink);stroke-width:1.7;stroke-linecap:round;}
-.moodface .eye{fill:var(--ink);stroke:none;}
+/* mood scale: Google Material Symbols sentiment faces, buyer circles one */
+.moods{display:flex;gap:12px;align-items:center;}
+.moodface{width:31px;height:31px;fill:var(--ink);opacity:.9;}
 
 /* ============ COVER ============ */
 .cover{height:100%;padding:74px 84px 80px;display:flex;flex-direction:column;
@@ -154,8 +151,9 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .ebar{display:flex;gap:5px;align-items:flex-end;height:24px;}
 .ebar i{width:9px;background:var(--accent-deep);border-radius:2px;}
 .ebar i.on{background:var(--accent);}
-.cup{width:17px;height:18px;fill:none;stroke:var(--accent-deep);}
-.cup.fill{stroke:var(--accent);}
+.cup{width:18px;height:21px;}
+.cup .glass{fill:none;stroke:var(--accent);stroke-width:1.3;stroke-linejoin:round;}
+.cup .water{fill:var(--accent);opacity:.38;}
 .hrs{font-size:12px;color:var(--faint);letter-spacing:.06em;}
 .nf{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--hair);}
 .nf .k{font-size:12px;color:var(--muted);width:84px;letter-spacing:.03em;}

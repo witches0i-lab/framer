@@ -34,6 +34,16 @@ const fonts = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
 /* lift the procedural cover markup straight from the design sample */
 const coverInner = sliceClass(html, 'cover');
 
+/* per-theme cover packs (defs + medallion palette/opacity); najeon is the base.
+   light has its own pink artwork; hanji falls back to najeon until designed. */
+const COVER = {
+  najeon: { defs: read('themes/cover/najeon.defs.svg'), med: medallion },
+  light:  { defs: read('themes/cover/light.defs.svg'),  med: read('themes/cover/light.med.js') },
+};
+const coverPack = (theme) => COVER[theme] || COVER.najeon;
+const coverFor = (theme) =>
+  coverInner.replace(/<defs>[\s\S]*?<\/defs>/, coverPack(theme).defs);
+
 /* ---- month data (undated / perpetual — Feb has 29 for leap years) ---- */
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MON3 = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
@@ -83,8 +93,8 @@ function rail(activeMonth = 0) {
 const page = (id, inner) => `<div class="page" id="${id}">${inner}</div>`;
 
 /* ---- pages ---- */
-function coverPage() {
-  return page('p-cover', coverInner);
+function coverPage(theme) {
+  return page('p-cover', coverFor(theme));
 }
 
 function yearPage() {
@@ -200,8 +210,8 @@ function monthNotesPage(m) {
 }
 
 /* ---- assemble the year in reading order ---- */
-function buildPages() {
-  const out = [coverPage(), yearPage()];
+function buildPages(theme) {
+  const out = [coverPage(theme), yearPage()];
   for (let m = 1; m <= 12; m++) {
     out.push(monthlyPage(m));
     for (let d = 1; d <= dim(m); d++) out.push(dailyPage(m, d));
@@ -231,7 +241,7 @@ body{display:block;}
 @page{size:1080px 1440px;margin:0;}
 @media print{html,body{background:#fff;}.page{box-shadow:none;}}
 `;
-function doc(title, themeCss, body, { switcher = false } = {}) {
+function doc(title, themeCss, body, { switcher = false, med = medallion } = {}) {
   const css = [fontFace, tokens, base, themeCss, printCss].filter(Boolean).join('\n');
   const sw = switcher ? `
 <div class="switcher" role="group" aria-label="Theme">
@@ -250,23 +260,26 @@ ${themeLink}
 <style>${css}</style></head>
 <body>${sw}
 ${body}
-<script>${medallion}</script>
+<script>${med}</script>
 ${sw_js}
 </body></html>
 `;
 }
 
-/* ---- build ---- */
-const pages = buildPages();
-const body = pages.map((p) => p).join('\n');
+/* ---- build (cover artwork is per-theme, so build the body per theme) ---- */
 const outRoot = join(root, 'export');
+let pages;   // keep a reference for the page count log
 
 for (const [theme, themeCss] of Object.entries(themes)) {
+  pages = buildPages(theme);
+  const body = pages.join('\n');
   mkdirSync(join(outRoot, theme), { recursive: true });
-  writeFileSync(join(outRoot, theme, 'goyo-print.html'), doc(`GOYO — ${theme}`, themeCss, body));
+  writeFileSync(join(outRoot, theme, 'goyo-print.html'),
+    doc(`GOYO — ${theme}`, themeCss, body, { med: coverPack(theme).med }));
 }
-/* live preview (default dark) with the review theme switcher */
-writeFileSync(join(root, 'planner.html'), doc('GOYO — planner', '', body, { switcher: true }));
+/* live preview (najeon base) with the review theme switcher */
+writeFileSync(join(root, 'planner.html'),
+  doc('GOYO — planner', '', buildPages('najeon').join('\n'), { switcher: true, med: COVER.najeon.med }));
 
 /* contact sheet */
 const sheet = Object.keys(themes).map((t) =>

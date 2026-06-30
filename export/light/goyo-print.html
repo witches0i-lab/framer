@@ -290,13 +290,23 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .nt{margin-top:18px;flex:1;border:1px solid var(--hair);border-radius:11px;
   background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:32px 32px;background-position:14px 14px;}
 
-/* GOYO theme — Light "paper". Link AFTER css/tokens.css to apply. */
+/* GOYO theme — Light "najeon pink". Link AFTER css/tokens.css to apply.
+   Palette derived from the pink cover: soft pink paper, near-black ink,
+   periwinkle-blue primary accent, najeon-pink secondary. */
 :root{
-  --bg:#f4f1ea; --surface:#ffffff; --line:#ddd6c8; --hair:#e7e1d4;
-  --ink:#2a2722; --muted:#7a756c; --faint:#a8a294;
-  --accent:#5f8c82; --accent-deep:#cfe0db; --accent-line:#d6e3df;
-  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.40); --accent2-fill:rgba(201,141,160,.06);
+  --bg:#fbf5f7; --surface:#fffcfd; --line:#ece1e5; --hair:#f4ecef;
+  --ink:#3a3a3c; --muted:#948b90; --faint:#b7a8ae;
+  --accent:#708aa9; --accent-deep:#cdd6e3; --accent-line:#d7dde8;
+  --accent2:#c98da0; --accent2-line:rgba(201,141,160,.42); --accent2-fill:rgba(201,141,160,.07);
 }
+
+/* cover (pink) — matches the supplied artwork; interior uses the tokens above */
+.cover{background:radial-gradient(122% 82% at 50% 30%,#fefcfc 0%,#f7edf0 60%,#f0e1e6 100%);}
+.med-glow{background:radial-gradient(circle,rgba(207,148,166,.20),rgba(230,188,199,.07) 46%,transparent 70%);}
+.wordmark{color:#3a3a3c;}
+.cover-eye,.cover-rule{color:#948b90;}
+.cover-year,.tagline{color:#708aa9;}
+.cover-rule{border-top-color:#e3d4d8;}
 
 
 /* print/export reset — only the pages render */
@@ -317,23 +327,25 @@ body{display:block;}
       <div class="med-glow"></div>
       <svg class="medallion" id="medallion" viewBox="0 0 760 760" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <clipPath id="discClip"><circle cx="380" cy="380" r="356"/></clipPath>
-          <radialGradient id="discGrad" cx="44%" cy="36%" r="78%">
-            <stop offset="0%" stop-color="#191d1f"/><stop offset="55%" stop-color="#0e1112"/><stop offset="100%" stop-color="#070809"/>
-          </radialGradient>
-          <radialGradient id="moonGrad" cx="40%" cy="36%" r="68%">
-            <stop offset="0%" stop-color="#fbf6ea"/><stop offset="46%" stop-color="#eee4cf"/>
-            <stop offset="80%" stop-color="#d6c6ac"/><stop offset="100%" stop-color="#b7b4c2"/>
-          </radialGradient>
-          <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="76%" stop-color="rgba(0,0,0,0)"/><stop offset="100%" stop-color="rgba(0,0,0,.55)"/>
-          </radialGradient>
-          <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c2e9df"/><stop offset="34%" stop-color="#f1c9d7"/><stop offset="67%" stop-color="#cfd6f1"/><stop offset="100%" stop-color="#ede3c3"/></linearGradient>
-          <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dac5ed"/><stop offset="34%" stop-color="#c2e9df"/><stop offset="67%" stop-color="#f4cdda"/><stop offset="100%" stop-color="#cfe1eb"/></linearGradient>
-          <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#f2cdd0"/><stop offset="34%" stop-color="#d6ebd1"/><stop offset="67%" stop-color="#c7d5f0"/><stop offset="100%" stop-color="#f0e1c7"/></linearGradient>
-          <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#cfece4"/><stop offset="34%" stop-color="#ead3ed"/><stop offset="67%" stop-color="#f1d9c5"/><stop offset="100%" stop-color="#c7dcef"/></linearGradient>
-          <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e7d8bf"/><stop offset="50%" stop-color="#9fb8c4"/><stop offset="100%" stop-color="#d8c4d0"/></linearGradient>
-        </defs>
+  <clipPath id="discClip"><circle cx="380" cy="380" r="356"/></clipPath>
+  <radialGradient id="discGrad" cx="44%" cy="36%" r="80%">
+    <stop offset="0%" stop-color="#fbf1f4"/><stop offset="52%" stop-color="#f1dee5"/>
+    <stop offset="100%" stop-color="#e4c8d3"/>
+  </radialGradient>
+  <radialGradient id="moonGrad" cx="40%" cy="36%" r="70%">
+    <stop offset="0%" stop-color="#ffffff"/><stop offset="46%" stop-color="#fbeef1"/>
+    <stop offset="80%" stop-color="#f0d2dc"/><stop offset="100%" stop-color="#e2b6c6"/>
+  </radialGradient>
+  <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
+    <stop offset="74%" stop-color="rgba(180,130,150,0)"/><stop offset="100%" stop-color="rgba(176,124,146,.20)"/>
+  </radialGradient>
+  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f4a6c0"/><stop offset="34%" stop-color="#ffd6c2"/><stop offset="67%" stop-color="#bcd0f5"/><stop offset="100%" stop-color="#ecc6ec"/></linearGradient>
+  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d9b8f0"/><stop offset="34%" stop-color="#f7bcd2"/><stop offset="67%" stop-color="#ffe0d6"/><stop offset="100%" stop-color="#b9d4f6"/></linearGradient>
+  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#f9bcc8"/><stop offset="34%" stop-color="#f0c8ea"/><stop offset="67%" stop-color="#bcd0f5"/><stop offset="100%" stop-color="#ffe3c8"/></linearGradient>
+  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#f2c2e0"/><stop offset="34%" stop-color="#f3b0c6"/><stop offset="67%" stop-color="#ffd2bb"/><stop offset="100%" stop-color="#c2c4f2"/></linearGradient>
+  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0d6cf"/><stop offset="50%" stop-color="#b6a4cb"/><stop offset="100%" stop-color="#c8b0d6"/></linearGradient>
+</defs>
+
         <circle cx="380" cy="380" r="356" fill="url(#discGrad)"/>
         <g clip-path="url(#discClip)" id="art"></g>
         <circle cx="380" cy="380" r="356" fill="url(#rimGlow)" pointer-events="none"/>
@@ -9082,20 +9094,20 @@ body{display:block;}
   var rnd=mb(11);
   var hz=454,bot=716;
   for(var y=hz;y<bot;y+=8){var dp=(y-hz)/(bot-hz),ct=Math.floor(28+dp*34);
-    for(var i=0;i<ct;i++){var x=20+rnd()*720,w=4+rnd()*(12+dp*20),op=(0.10+rnd()*0.55)*(1-dp*0.5);
+    for(var i=0;i<ct;i++){var x=20+rnd()*720,w=4+rnd()*(12+dp*20),op=(0.18+rnd()*0.62)*(1-dp*0.42);
       art.appendChild(el('rect',{x:x.toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:(1.4+rnd()*1.6).toFixed(1),rx:1,fill:ri(),opacity:op.toFixed(2)}));}}
   function streak(cx){for(var y=hz;y<bot;y+=7){var dp=(y-hz)/(bot-hz),w=10+rnd()*26;
-    art.appendChild(el('rect',{x:(cx-w/2+(rnd()-0.5)*30).toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:(1.6+rnd()*1.8).toFixed(1),rx:1,fill:ri(),opacity:((0.22+rnd()*0.5)*(1-dp*0.45)).toFixed(2)}));}}
+    art.appendChild(el('rect',{x:(cx-w/2+(rnd()-0.5)*30).toFixed(1),y:y.toFixed(1),width:w.toFixed(1),height:(1.6+rnd()*1.8).toFixed(1),rx:1,fill:ri(),opacity:((0.30+rnd()*0.55)*(1-dp*0.40)).toFixed(2)}));}}
   streak(210);streak(536);
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'url(#moonGrad)'}));
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'none',stroke:'#fff5e6','stroke-width':3,opacity:.10}));
   var tg=el('g',{transform:'translate(-98 132)'});art.appendChild(tg);
-  var SH=['#eef2f3','#e3ebee','#d4dfe3','#f4f0e6'];
+  var SH=['#fbe7ee','#f4d4e0','#ecc0d0','#e3b0c2','#d9a0b6','#ffffff'];
   function sh(){return SH[Math.floor(rnd()*4)];}
   function P(x,y){return x.toFixed(1)+','+y.toFixed(1);}
   function fan(x,y,open,sc){var arc=1.5+rnd()*0.5,a1=open-arc/2,a2=open+arc/2,R=(28+rnd()*16)*sc;
     var b1x=x+Math.cos(a1)*R,b1y=y+Math.sin(a1)*R,b2x=x+Math.cos(a2)*R,b2y=y+Math.sin(a2)*R;
-    tg.appendChild(el('path',{d:'M'+P(x,y)+' L'+P(b1x,b1y)+' A'+R.toFixed(1)+' '+R.toFixed(1)+' 0 0 1 '+P(b2x,b2y)+' Z',fill:ri(),opacity:(0.09+rnd()*0.10).toFixed(2)}));
+    tg.appendChild(el('path',{d:'M'+P(x,y)+' L'+P(b1x,b1y)+' A'+R.toFixed(1)+' '+R.toFixed(1)+' 0 0 1 '+P(b2x,b2y)+' Z',fill:ri(),opacity:(0.14+rnd()*0.14).toFixed(2)}));
     var rays=18+Math.floor(rnd()*10);
     for(var i=0;i<rays;i++){var a=a1+arc*(i/(rays-1)),len=R*(0.82+rnd()*0.22);
       tg.appendChild(el('line',{x1:x.toFixed(1),y1:y.toFixed(1),x2:(x+Math.cos(a)*len).toFixed(1),y2:(y+Math.sin(a)*len).toFixed(1),stroke:sh(),'stroke-width':(0.7+rnd()*0.7).toFixed(1),'stroke-linecap':'round',opacity:(0.45+rnd()*0.4).toFixed(2)}));}
@@ -9106,7 +9118,7 @@ body{display:block;}
     var dx=pts[i+1][0]-pts[i][0],dy=pts[i+1][1]-pts[i][1],L=Math.hypot(dx,dy),st=Math.max(1,Math.floor(L/9)),ang=Math.atan2(dy,dx)*57.2958;
     for(var s=0;s<st;s++){var t=s/st,fx=pts[i][0]+dx*t,fy=pts[i][1]+dy*t;
       if(rnd()<0.5)tg.appendChild(el('ellipse',{cx:fx.toFixed(1),cy:fy.toFixed(1),rx:(1+rnd()*2).toFixed(1),ry:(0.6+rnd()*1.2).toFixed(1),fill:ri(),opacity:(0.3+rnd()*0.4).toFixed(2),transform:'rotate('+ang.toFixed(0)+' '+fx.toFixed(1)+' '+fy.toFixed(1)+')'}));
-      if(rnd()<0.32){var na=Math.atan2(dy,dx)+Math.PI/2,cl=w*0.85;tg.appendChild(el('line',{x1:(fx-Math.cos(na)*cl).toFixed(1),y1:(fy-Math.sin(na)*cl).toFixed(1),x2:(fx+Math.cos(na)*cl).toFixed(1),y2:(fy+Math.sin(na)*cl).toFixed(1),stroke:'#0a0c0d','stroke-width':0.8,opacity:.5}));}}}}
+      if(rnd()<0.32){var na=Math.atan2(dy,dx)+Math.PI/2,cl=w*0.85;tg.appendChild(el('line',{x1:(fx-Math.cos(na)*cl).toFixed(1),y1:(fy-Math.sin(na)*cl).toFixed(1),x2:(fx+Math.cos(na)*cl).toFixed(1),y2:(fy+Math.sin(na)*cl).toFixed(1),stroke:'#c489a0','stroke-width':0.8,opacity:.5}));}}}}
   function cf(x,y,open,sc){var k=3+Math.floor(rnd()*3);for(var c=0;c<k;c++)fan(x+(rnd()-0.5)*22*sc,y+(rnd()-0.5)*16*sc,open+(rnd()-0.5)*0.6,sc*(0.72+rnd()*0.45));}
   limb([[160,458],[226,442],[292,420],[356,404],[428,372],[488,330],[542,292],[568,256]],24);
   limb([[226,442],[286,478],[330,540],[352,606]],14);

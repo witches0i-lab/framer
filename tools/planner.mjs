@@ -114,13 +114,13 @@ function dailyPage(m, d) {
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 15a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 15H7z" stroke-linejoin="round"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2" stroke-linecap="round"/></svg>
     <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="8" cy="8" r="3"/><path d="M11 17a3.5 3.5 0 01.5-7 4.3 4.3 0 018.2 1.3A3 3 0 0119 17h-8z" stroke-linejoin="round"/></svg></div>`;
   let cups = '';
-  for (let i = 0; i < 7; i++) cups += `<svg class="cup${i < 3 ? ' fill' : ''}" viewBox="0 0 20 22"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>`;
+  for (let i = 0; i < 7; i++) cups += `<svg class="cup" viewBox="0 0 20 22"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>`;
   const left = `<div class="dcol-l">
     <div class="lbl">Today's affirmation</div><div class="box" style="height:92px"></div>
     <div class="lbl" style="margin-top:18px">Today's weather</div>${wx}
     <div class="sec">Overall well-being</div>
-    <div class="row"><div class="k">Mood</div><div class="v"><div class="face">☻</div><div class="face on">☺</div><div class="face">·</div><div class="face">·</div><div class="face">☹</div></div></div>
-    <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i class="on" style="height:9px"></i><i class="on" style="height:13px"></i><i class="on" style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
+    <div class="row"><div class="k">Mood</div><div class="v"><div class="face">☻</div><div class="face">☺</div><div class="face">·</div><div class="face">·</div><div class="face">☹</div></div></div>
+    <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i style="height:9px"></i><i style="height:13px"></i><i style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
     <div class="row"><div class="k">Sleep</div><div class="v"><div class="fill"></div><span class="hrs">hrs</span></div></div>
     <div class="row"><div class="k">Water</div><div class="v">${cups}</div></div>
     <div class="sec">Nutrition check</div>

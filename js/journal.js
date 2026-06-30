@@ -13,8 +13,8 @@
   var ds=document.getElementById('dstrip');
   if(ds){var h='';for(var d=1;d<=31;d++){h+='<span'+(d===6?' class="on"':'')+'>'+d+'</span>';}ds.innerHTML=h;}
   var cups=document.getElementById('cups');
-  if(cups){var c='';for(var i=0;i<7;i++){var col=i<3?'#74a89f':'#34433f';
-    c+='<svg class="cup" viewBox="0 0 20 22" fill="none" stroke="'+col+'" stroke-width="1.3"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>';}cups.innerHTML=c;}
+  if(cups){var c='';for(var i=0;i<7;i++){
+    c+='<svg class="cup" viewBox="0 0 20 22"><path d="M4 5h12l-1.2 13H5.2L4 5z"/></svg>';}cups.innerHTML=c;}
 })();
 
 /* ---- monthly calendar grid ---- */
@@ -47,7 +47,7 @@
   var rows=head;
   habits.forEach(function(name,r){
     var row='<div class="hb-row"><div class="hb-name">'+name+'</div><div class="hb-days">';
-    for(var d=1;d<=31;d++){var f=((d*7+r*3)%5===0)?' f':'';row+='<div class="hb-c"><div class="o'+f+'"></div></div>';}
+    for(var d=1;d<=31;d++){row+='<div class="hb-c"><div class="o"></div></div>';}
     row+='</div></div>';rows+=row;
   });
   hb.innerHTML=rows;

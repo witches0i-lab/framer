@@ -36,6 +36,8 @@ js/journal.js     seal + page generators for the sample (date strip, calendar, c
 js/switcher.js    review-only theme switcher (swaps the #theme stylesheet)
 assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
+themes/cover/      per-theme cover artwork packs (NN.defs.svg + NN.med.js); najeon = base,
+                  light = pink glass-sphere. Planner builds the cover per theme.
 tools/planner.mjs PRODUCT build: full year → cover, year, 12 months, 365 days, habits, weekly,
                   gratitude, notes; all internal links wired. → export/<theme>/goyo-print.html + planner.html
 tools/guide.mjs   user-guide build, one per theme (same layout, colourway only) → export/<theme>/goyo-guide.html

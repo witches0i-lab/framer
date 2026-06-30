@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
+const fontFace  = read('assets/fonts/fonts.css');   // base64-embedded serif/sans
 const tokens    = read('css/tokens.css');
 const base      = read('css/base.css');
 const medallion = read('js/medallion.js');
@@ -231,7 +232,7 @@ body{display:block;}
 @media print{html,body{background:#fff;}.page{box-shadow:none;}}
 `;
 function doc(title, themeCss, body, { switcher = false } = {}) {
-  const css = [tokens, base, themeCss, printCss].filter(Boolean).join('\n');
+  const css = [fontFace, tokens, base, themeCss, printCss].filter(Boolean).join('\n');
   const sw = switcher ? `
 <div class="switcher" role="group" aria-label="Theme">
   <span class="switcher-cap">Theme</span>

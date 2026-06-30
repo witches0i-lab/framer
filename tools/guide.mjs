@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
 
+const fontFace = read('assets/fonts/fonts.css');
 const tokens = read('css/tokens.css');
 const base   = read('css/base.css');
 const html   = read('index.html');
@@ -152,7 +153,7 @@ body{display:block;}
   padding-top:24px;font-size:14px;letter-spacing:.08em;color:var(--faint);}
 `;
 
-const css = [tokens, base, guideCss].join('\n');
+const css = [fontFace, tokens, base, guideCss].join('\n');
 const out = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GOYO — User guide</title>

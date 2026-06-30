@@ -189,10 +189,10 @@ function weeklyPage() {
 
 function gratitudePage() {
   const rows = MONTHS.map((name, i) =>
-    `<a class="gr" href="#${mId(i + 1)}"><div class="gr-mo">${name}</div><div class="gr-ln"></div></a>`).join('');
+    `<a class="gr" href="#${mId(i + 1)}"><div class="gr-mo">${name}</div></a>`).join('');
   const inner = `${tabs('p-grat')}${rail()}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">A year of thanks</div><h1 class="h1">Gratitude <em>log</em></h1></div>
-      <div class="pmeta">ONE LINE,<br>EACH MONTH</div></div>
+      <div class="pmeta">ONE NOTE,<br>EACH MONTH</div></div>
     <div class="hr white spaced"></div><div class="grat">${rows}</div></div>`;
   return page('p-grat', inner);
 }

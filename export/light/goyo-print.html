@@ -290,30 +290,29 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .nt{margin-top:18px;flex:1;border:1px solid var(--hair);border-radius:11px;
   background-image:radial-gradient(var(--line) 1.2px,transparent 1.2px);background-size:32px 32px;background-position:14px 14px;}
 
-/* GOYO theme — Light "najeon pink". Link AFTER css/tokens.css to apply.
-   Pink is the edition's primary accent (replacing najeon's celadon/mint);
-   the cover's periwinkle blue becomes the secondary accent (replacing pink).
-   Only this file changes — najeon is the untouched base. */
+/* GOYO theme — Light "pink + cyan". Link AFTER css/tokens.css to apply.
+   Palette keyed to #FFFFFF (base), #FFD5E8 (pink, primary), #C6FAFF (cyan,
+   secondary). Only this file changes — najeon is the untouched base. */
 :root{
-  --bg:#fbf5f7; --surface:#fffcfd; --line:#ece1e5; --hair:#f4ecef;
-  --ink:#3a3a3c; --muted:#948b90; --faint:#b7a8ae;
-  /* primary = pink */
-  --accent:#c2748f; --accent-deep:#ecd6df; --accent-line:#e7d1da;
-  /* secondary = cover periwinkle blue */
-  --accent2:#708aa9; --accent2-line:rgba(112,138,169,.42); --accent2-fill:rgba(112,138,169,.07);
+  --bg:#fff8fb; --surface:#ffffff; --line:#f0dfe7; --hair:#f7ecf1;
+  --ink:#3a3a3c; --muted:#9a8f95; --faint:#c2b4bb;
+  /* primary = pink (#FFD5E8) */
+  --accent:#e493b5; --accent-deep:#ffd5e8; --accent-line:#f6d3e1;
+  /* secondary = cyan (#C6FAFF) */
+  --accent2:#6cc3d4; --accent2-line:rgba(120,200,216,.45); --accent2-fill:rgba(198,250,255,.30);
 }
 
-/* seal: recolour najeon's celadon→pink, pink→blue (CSS beats the SVG fill attr) */
+/* seal: recolour najeon's celadon→pink, pink→cyan (CSS beats the SVG fill attr) */
 .seal svg ellipse:nth-of-type(1){fill:var(--accent);}
 .seal svg ellipse:nth-of-type(2){fill:var(--accent2);}
 
-/* cover (pink) — matches the supplied artwork; interior uses the tokens above */
-.cover{background:radial-gradient(122% 82% at 50% 30%,#fefcfc 0%,#f7edf0 60%,#f0e1e6 100%);}
-.med-glow{background:radial-gradient(circle,rgba(207,148,166,.20),rgba(230,188,199,.07) 46%,transparent 70%);}
+/* cover (pink glass on white, cyan italics) */
+.cover{background:radial-gradient(122% 82% at 50% 30%,#ffffff 0%,#fff4f9 60%,#ffe9f2 100%);}
+.med-glow{background:radial-gradient(circle,rgba(255,170,205,.22),rgba(198,250,255,.10) 46%,transparent 70%);}
 .wordmark{color:#3a3a3c;}
-.cover-eye,.cover-rule{color:#948b90;}
-.cover-year,.tagline{color:#708aa9;}
-.cover-rule{border-top-color:#e3d4d8;}
+.cover-eye,.cover-rule{color:#9a8f95;}
+.cover-year,.tagline{color:#4fa9bd;}
+.cover-rule{border-top-color:#f0dfe7;}
 
 
 /* print/export reset — only the pages render */
@@ -336,21 +335,21 @@ body{display:block;}
         <defs>
   <clipPath id="discClip"><circle cx="380" cy="380" r="356"/></clipPath>
   <radialGradient id="discGrad" cx="44%" cy="36%" r="80%">
-    <stop offset="0%" stop-color="#fbf1f4"/><stop offset="52%" stop-color="#f1dee5"/>
-    <stop offset="100%" stop-color="#e4c8d3"/>
+    <stop offset="0%" stop-color="#fff8fb"/><stop offset="52%" stop-color="#ffe6f0"/>
+    <stop offset="100%" stop-color="#ffd0e3"/>
   </radialGradient>
   <radialGradient id="moonGrad" cx="40%" cy="36%" r="70%">
-    <stop offset="0%" stop-color="#ffffff"/><stop offset="46%" stop-color="#fbeef1"/>
-    <stop offset="80%" stop-color="#f0d2dc"/><stop offset="100%" stop-color="#e2b6c6"/>
+    <stop offset="0%" stop-color="#ffffff"/><stop offset="46%" stop-color="#fff2f8"/>
+    <stop offset="80%" stop-color="#ffdcec"/><stop offset="100%" stop-color="#ffc8e0"/>
   </radialGradient>
   <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
-    <stop offset="74%" stop-color="rgba(180,130,150,0)"/><stop offset="100%" stop-color="rgba(176,124,146,.20)"/>
+    <stop offset="74%" stop-color="rgba(190,120,150,0)"/><stop offset="100%" stop-color="rgba(190,120,150,.16)"/>
   </radialGradient>
-  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f4a6c0"/><stop offset="34%" stop-color="#ffd6c2"/><stop offset="67%" stop-color="#bcd0f5"/><stop offset="100%" stop-color="#ecc6ec"/></linearGradient>
-  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d9b8f0"/><stop offset="34%" stop-color="#f7bcd2"/><stop offset="67%" stop-color="#ffe0d6"/><stop offset="100%" stop-color="#b9d4f6"/></linearGradient>
-  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#f9bcc8"/><stop offset="34%" stop-color="#f0c8ea"/><stop offset="67%" stop-color="#bcd0f5"/><stop offset="100%" stop-color="#ffe3c8"/></linearGradient>
-  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#f2c2e0"/><stop offset="34%" stop-color="#f3b0c6"/><stop offset="67%" stop-color="#ffd2bb"/><stop offset="100%" stop-color="#c2c4f2"/></linearGradient>
-  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0d6cf"/><stop offset="50%" stop-color="#b6a4cb"/><stop offset="100%" stop-color="#c8b0d6"/></linearGradient>
+  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#ffffff"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffe0f0"/></linearGradient>
+  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c6faff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8f5ff"/></linearGradient>
+  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#c6faff"/><stop offset="67%" stop-color="#ffeaf3"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#ffffff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffdcf0"/></linearGradient>
+  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="50%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
 </defs>
 
         <circle cx="380" cy="380" r="356" fill="url(#discGrad)"/>
@@ -9109,7 +9108,7 @@ body{display:block;}
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'url(#moonGrad)'}));
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'none',stroke:'#fff5e6','stroke-width':3,opacity:.10}));
   var tg=el('g',{transform:'translate(-98 132)'});art.appendChild(tg);
-  var SH=['#fbe7ee','#f4d4e0','#ecc0d0','#e3b0c2','#d9a0b6','#ffffff'];
+  var SH=['#ffd5e8','#ffe9f2','#c6faff','#ffffff','#ffdcef','#dff7ff'];
   function sh(){return SH[Math.floor(rnd()*4)];}
   function P(x,y){return x.toFixed(1)+','+y.toFixed(1);}
   function fan(x,y,open,sc){var arc=1.5+rnd()*0.5,a1=open-arc/2,a2=open+arc/2,R=(28+rnd()*16)*sc;

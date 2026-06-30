@@ -16,7 +16,7 @@
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'url(#moonGrad)'}));
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'none',stroke:'#fff5e6','stroke-width':3,opacity:.10}));
   var tg=el('g',{transform:'translate(-98 132)'});art.appendChild(tg);
-  var SH=['#fbe7ee','#f4d4e0','#ecc0d0','#e3b0c2','#d9a0b6','#ffffff'];
+  var SH=['#ffd5e8','#ffe9f2','#c6faff','#ffffff','#ffdcef','#dff7ff'];
   function sh(){return SH[Math.floor(rnd()*4)];}
   function P(x,y){return x.toFixed(1)+','+y.toFixed(1);}
   function fan(x,y,open,sc){var arc=1.5+rnd()*0.5,a1=open-arc/2,a2=open+arc/2,R=(28+rnd()*16)*sc;

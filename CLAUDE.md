@@ -28,7 +28,7 @@ Every `.page` is `1080 × 1440` (portrait, tablet-friendly for GoodNotes).
 
 ## Structure
 ```
-index.html        7 archetype pages (Cover, Index, Monthly, Weekly, Daily, Habits, Notes) — design sample
+index.html        7 archetype pages (Cover, Year, Monthly, Daily, Habits, Notes, Gratitude) — design sample
 css/tokens.css    DESIGN SYSTEM — single source of truth (palette, type, spacing, frame)
 css/base.css      layout + components (chrome, labels, rows, page-specific). Don't churn.
 js/medallion.js   procedural najeon cover art (seeded PRNG → SVG into #art)
@@ -54,7 +54,7 @@ export/           generated output (regenerate via `npm run build`; large goyo.p
   switcher** (top-right pill, `js/switcher.js`) swaps the empty `#theme` link's `href` at runtime
   and remembers the choice in `localStorage`. The switcher lives outside every `.page`, so it is
   excluded from any print/export pass.
-- Keep the type hierarchy: one serif display per page (`--serif`, Fraunces), everything else
+- Keep the type hierarchy: one serif display per page (`--serif`, Bodoni Moda), everything else
   `--sans` (Inter) at `--t-label` (11px, uppercase, letter-spaced) with hairline separators.
 - Accents: `--accent` (celadon) = active/section; `--accent2` (pink) = dividers, gratitude, seal.
 - Chrome is shared: text tabs w/ celadon underline, 40px **rotated** month rail, najeon seal.

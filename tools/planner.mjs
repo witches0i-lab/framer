@@ -36,13 +36,15 @@ const coverInner = sliceClass(html, 'cover');
 
 /* per-theme cover packs (defs + medallion palette/opacity); najeon is the base.
    light has its own pink artwork; hanji falls back to najeon until designed.
-   light's pine is pre-baked to a flat PNG (see themes/cover/light.pine.b64):
+   Every theme's pine is pre-baked to a flat PNG (themes/cover/<theme>.pine.b64):
    many stacked semi-transparent SVG shapes render fine in Chromium/pymupdf/
    poppler but some PDF viewers flatten nested transparency groups incorrectly
-   and render the overlaps as black — baking to one raster layer sidesteps
-   that entirely. najeon keeps the live procedural SVG (unaffected/unchanged). */
+   and render the overlaps as black — baking to one raster layer sidesteps that
+   entirely, and also roughly halves the final PDF size (one flat image per
+   cover vs. thousands of tiny vector paths repeated as PDF XObjects). */
 const COVER = {
-  najeon: { defs: read('themes/cover/najeon.defs.svg'), med: medallion },
+  najeon: { defs: read('themes/cover/najeon.defs.svg'), med: '',
+            pineB64: read('themes/cover/najeon.pine.b64') },
   light:  { defs: read('themes/cover/light.defs.svg'),  med: '',
             pineB64: read('themes/cover/light.pine.b64') },
 };

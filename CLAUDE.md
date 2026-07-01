@@ -19,8 +19,8 @@ only the colourway tokens — layout, anchors and text positions are identical a
 ## Run / preview
 ```bash
 python3 -m http.server 5173      # or: npm run dev  → http://localhost:5173
-# index.html  = 7-page design sample (the archetypes, with the theme switcher)
-# planner.html = generated full-year planner (394 pages), live preview w/ switcher
+# index.html  = 7-page design sample (the archetypes)
+# planner.html = generated full-year planner (394 pages), live preview (najeon base)
 
 npm run build   # planner.mjs + guide.mjs + pdf.mjs → export/<theme>/goyo.pdf + export/guide/goyo-guide.pdf
 ```
@@ -33,7 +33,6 @@ css/tokens.css    DESIGN SYSTEM — single source of truth (palette, type, spaci
 css/base.css      layout + components (chrome, labels, rows, page-specific). Don't churn.
 js/medallion.js   procedural najeon cover art (seeded PRNG → SVG into #art)
 js/journal.js     seal + page generators for the sample (date strip, calendar, cols, habit grid)
-js/switcher.js    review-only theme switcher (swaps the #theme stylesheet)
 assets/           hi-fidelity cover medallion (svg + png) for print/Figma
 themes/           colourway overrides (light.css, hanji.css) — opt-in
 themes/cover/      per-theme cover artwork packs (NN.defs.svg + NN.med.js); najeon = base,
@@ -50,10 +49,8 @@ export/           generated output (regenerate via `npm run build`; large goyo.p
 - **Variations = edit `css/tokens.css` only.** Colour, font, spacing, and frame are all tokens.
   Never fork the layout to reskin it. To try a colourway, add/override `:root` in a theme file.
 - **Apply a theme:** add `<link rel="stylesheet" href="themes/light.css">` *after* `css/tokens.css`
-  in `index.html` (later link wins). Default ships dark. For review, the workspace **theme
-  switcher** (top-right pill, `js/switcher.js`) swaps the empty `#theme` link's `href` at runtime
-  and remembers the choice in `localStorage`. The switcher lives outside every `.page`, so it is
-  excluded from any print/export pass.
+  in `index.html` (later link wins). Default ships dark. There is no in-page theme switcher —
+  each colourway is a separate build/preview (see `export/<theme>/`).
 - Keep the type hierarchy: one serif display per page (`--serif`, Bodoni Moda), everything else
   `--sans` (Inter) at `--t-label` (11px, uppercase, letter-spaced) with hairline separators.
 - Accents: `--accent` (celadon) = active/section; `--accent2` (pink) = dividers, gratitude, seal.
@@ -66,7 +63,8 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
 
 ## Roadmap (good tasks)
 1. ~~`themes/` colourways + a tiny theme switcher for review.~~ ✅ Najeon (default dark) /
-   Light / Hanji, swapped live via the top-right switcher.
+   Light / Hanji. (The in-page switcher UI was later removed as unnecessary; preview each
+   colourway via its own build in `export/<theme>/` or `planner.html`.)
 2. ~~Per-theme **export to print-ready HTML** (one file per page, no workspace chrome/labels).~~
    ✅ `npm run export` (`tools/export.mjs`) → `export/<theme>/NN-name.html` (7 pages × 3 themes),
    each self-contained (inlined CSS/JS, no chrome) at 1080×1440. `export/index.html` is a contact

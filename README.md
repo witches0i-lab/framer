@@ -32,8 +32,9 @@ by adding it after the tokens link in index.html (later link wins):
 <link rel="stylesheet" href="themes/light.css">
 ```
 
-## Roadmap
-1. Theme switcher for review.
+## Roadmap (done)
+1. ~~Theme switcher for review.~~ Colourways ship as separate per-theme builds instead
+   (`export/<theme>/`); no in-page switcher.
 2. Per-theme export to print-ready HTML.
 3. Hyperlinked-PDF pipeline (tabs to pages, rail to months, index to sections) + GoodNotes link test.
-4. New pages: weekly reflection, year overview, gratitude log.
+4. New pages: year-at-a-glance, gratitude log, per-month notes.

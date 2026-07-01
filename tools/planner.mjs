@@ -11,7 +11,7 @@
      • monthly calendar day → that day's page
      • daily page number/month → back to its month
    Output: export/<theme>/goyo-print.html (combined, hyperlinked) +
-   planner.html (live preview w/ theme switcher). Render PDFs with
+   planner.html (live preview, najeon base). Render PDFs with
    `node tools/pdf.mjs`.  Dependency-free (Node built-ins only).
 
      node tools/planner.mjs        # or: npm run export
@@ -258,26 +258,16 @@ body{display:block;}
 @page{size:1080px 1440px;margin:0;}
 @media print{html,body{background:#fff;}.page{box-shadow:none;}}
 `;
-function doc(title, themeCss, body, { switcher = false, med = medallion } = {}) {
+function doc(title, themeCss, body, { med = medallion } = {}) {
   const css = [fontFace, tokens, base, themeCss, printCss].filter(Boolean).join('\n');
-  const sw = switcher ? `
-<div class="switcher" role="group" aria-label="Theme">
-  <button class="sw on" data-theme="">Najeon</button>
-  <button class="sw" data-theme="themes/light.css">Light</button>
-  <button class="sw" data-theme="themes/hanji.css">Hanji</button>
-</div>` : '';
-  const themeLink = switcher ? '<link rel="stylesheet" id="theme" href="">' : '';
-  const sw_js = switcher ? '<script src="js/switcher.js"></script>' : '';
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
 ${fonts}
-${themeLink}
 <style>${css}</style></head>
-<body>${sw}
+<body>
 ${body}
 <script>${med}</script>
-${sw_js}
 </body></html>
 `;
 }
@@ -293,9 +283,9 @@ for (const [theme, themeCss] of Object.entries(themes)) {
   writeFileSync(join(outRoot, theme, 'goyo-print.html'),
     doc(`GOYO — ${theme}`, themeCss, body, { med: coverPack(theme).med }));
 }
-/* live preview (najeon base) with the review theme switcher */
+/* live preview (najeon base, no theme switcher) */
 writeFileSync(join(root, 'planner.html'),
-  doc('GOYO — planner', '', buildPages('najeon').join('\n'), { switcher: true, med: COVER.najeon.med }));
+  doc('GOYO — planner', '', buildPages('najeon').join('\n'), { med: COVER.najeon.med }));
 
 /* contact sheet */
 const sheet = Object.keys(themes).map((t) =>

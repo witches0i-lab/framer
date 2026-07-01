@@ -345,11 +345,11 @@ body{display:block;}
   <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
     <stop offset="74%" stop-color="rgba(190,120,150,0)"/><stop offset="100%" stop-color="rgba(190,120,150,.16)"/>
   </radialGradient>
-  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#ffffff"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffe0f0"/></linearGradient>
-  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c6faff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8f5ff"/></linearGradient>
-  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#c6faff"/><stop offset="67%" stop-color="#ffeaf3"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
-  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#ffffff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffdcf0"/></linearGradient>
-  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="50%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#ffffff"/><stop offset="67%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffe0f0"/></linearGradient>
+  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dbf3fb"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8f5ff"/></linearGradient>
+  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#dbf3fb"/><stop offset="67%" stop-color="#ffeaf3"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#ffffff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffdcf0"/></linearGradient>
+  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="50%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
 </defs>
 
         <circle cx="380" cy="380" r="356" fill="url(#discGrad)"/>
@@ -9108,7 +9108,7 @@ body{display:block;}
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'url(#moonGrad)'}));
   art.appendChild(el('circle',{cx:536,cy:96,r:78,fill:'none',stroke:'#fff5e6','stroke-width':3,opacity:.10}));
   var tg=el('g',{transform:'translate(-98 132)'});art.appendChild(tg);
-  var SH=['#ffd5e8','#ffe9f2','#c6faff','#ffffff','#ffdcef','#dff7ff'];
+  var SH=['#ffffff','#ffd5e8','#ffffff','#dbf3fb','#ffe9f2','#eefaff'];
   function sh(){return SH[Math.floor(rnd()*4)];}
   function P(x,y){return x.toFixed(1)+','+y.toFixed(1);}
   function fan(x,y,open,sc){var arc=1.5+rnd()*0.5,a1=open-arc/2,a2=open+arc/2,R=(28+rnd()*16)*sc;

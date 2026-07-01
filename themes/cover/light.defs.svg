@@ -11,9 +11,9 @@
   <radialGradient id="rimGlow" cx="50%" cy="50%" r="50%">
     <stop offset="74%" stop-color="rgba(190,120,150,0)"/><stop offset="100%" stop-color="rgba(190,120,150,.16)"/>
   </radialGradient>
-  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#ffffff"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffe0f0"/></linearGradient>
-  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c6faff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8f5ff"/></linearGradient>
-  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#c6faff"/><stop offset="67%" stop-color="#ffeaf3"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
-  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#ffffff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffdcf0"/></linearGradient>
-  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="50%" stop-color="#c6faff"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="ir1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#ffffff"/><stop offset="67%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffe0f0"/></linearGradient>
+  <linearGradient id="ir2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dbf3fb"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8f5ff"/></linearGradient>
+  <linearGradient id="ir3" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="34%" stop-color="#dbf3fb"/><stop offset="67%" stop-color="#ffeaf3"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="ir4" x1="0" y1="0" x2="1" y2="0.6"><stop offset="0%" stop-color="#ffffff"/><stop offset="34%" stop-color="#ffd5e8"/><stop offset="67%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffdcf0"/></linearGradient>
+  <linearGradient id="rimStroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd5e8"/><stop offset="50%" stop-color="#dbf3fb"/><stop offset="100%" stop-color="#ffffff"/></linearGradient>
 </defs>

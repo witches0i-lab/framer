@@ -262,7 +262,6 @@ function doc(title, themeCss, body, { switcher = false, med = medallion } = {}) 
   const css = [fontFace, tokens, base, themeCss, printCss].filter(Boolean).join('\n');
   const sw = switcher ? `
 <div class="switcher" role="group" aria-label="Theme">
-  <span class="switcher-cap">Theme</span>
   <button class="sw on" data-theme="">Najeon</button>
   <button class="sw" data-theme="themes/light.css">Light</button>
   <button class="sw" data-theme="themes/hanji.css">Hanji</button>

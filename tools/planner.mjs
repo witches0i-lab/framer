@@ -178,8 +178,8 @@ function dailyPage(m, d) {
     <div class="nf"><div class="k">Dinner</div></div>
     <div class="nf"><div class="k">Snack</div></div>
     <div class="lbl" style="margin-top:20px">Today's act of self-care</div><div class="box" style="height:76px"></div>
-    <div class="lbl" style="margin-top:16px;color:var(--accent2)">Grateful for</div>
-    <div class="box" style="flex:1;min-height:96px;border-color:var(--accent2-line);background:var(--accent2-fill)"></div></div>`;
+    <div class="lbl" style="margin-top:16px;color:var(--grat-c)">Grateful for</div>
+    <div class="box" style="flex:1;min-height:96px;border-color:var(--grat-line);background:var(--grat-fill)"></div></div>`;
   const inner = `${tabs('', m)}${rail(m)}<div class="content">
     <div class="dtop"><a class="dnum" href="#${mId(m)}">${p2(d)}</a><div class="dstrip">${strip}</div></div>
     <div class="dsub"><a class="mo" href="#${mId(m)}" style="text-decoration:none">${MONTHS[m - 1]}</a></div>

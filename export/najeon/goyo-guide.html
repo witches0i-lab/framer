@@ -31,6 +31,12 @@
   --accent2-line:rgba(230,188,199,.40);
   --accent2-fill:rgba(230,188,199,.05);
   --moon:#efe4cf;
+  /* "Grateful for" box (daily page) — defaults to the secondary accent;
+     themes may override independently (e.g. light keeps it pink tone-on-tone
+     even when --accent2 elsewhere is a different hue). */
+  --grat-c:var(--accent2);
+  --grat-line:var(--accent2-line);
+  --grat-fill:var(--accent2-fill);
 
   /* ---- type ------------------------------------------------------------- */
   --serif:'Bodoni Moda',Georgia,serif;  /* display only      */

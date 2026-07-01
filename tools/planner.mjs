@@ -35,14 +35,29 @@ const fonts = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
 const coverInner = sliceClass(html, 'cover');
 
 /* per-theme cover packs (defs + medallion palette/opacity); najeon is the base.
-   light has its own pink artwork; hanji falls back to najeon until designed. */
+   light has its own pink artwork; hanji falls back to najeon until designed.
+   light's pine is pre-baked to a flat PNG (see themes/cover/light.pine.b64):
+   many stacked semi-transparent SVG shapes render fine in Chromium/pymupdf/
+   poppler but some PDF viewers flatten nested transparency groups incorrectly
+   and render the overlaps as black — baking to one raster layer sidesteps
+   that entirely. najeon keeps the live procedural SVG (unaffected/unchanged). */
 const COVER = {
   najeon: { defs: read('themes/cover/najeon.defs.svg'), med: medallion },
-  light:  { defs: read('themes/cover/light.defs.svg'),  med: read('themes/cover/light.med.js') },
+  light:  { defs: read('themes/cover/light.defs.svg'),  med: '',
+            pineB64: read('themes/cover/light.pine.b64') },
 };
 const coverPack = (theme) => COVER[theme] || COVER.najeon;
-const coverFor = (theme) =>
-  coverInner.replace(/<defs>[\s\S]*?<\/defs>/, coverPack(theme).defs);
+const coverFor = (theme) => {
+  let inner = coverInner.replace(/<defs>[\s\S]*?<\/defs>/, coverPack(theme).defs);
+  const pine = coverPack(theme).pineB64;
+  if (pine) {
+    inner = inner.replace(
+      /<g clip-path="url\(#discClip\)" id="art"><\/g>/,
+      `<image clip-path="url(#discClip)" x="0" y="0" width="760" height="760" href="data:image/png;base64,${pine}"/>`
+    );
+  }
+  return inner;
+};
 
 /* ---- month data (undated / perpetual — Feb has 29 for leap years) ---- */
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];

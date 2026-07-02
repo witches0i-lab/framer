@@ -142,10 +142,11 @@ function monthlyPage(m) {
   }
   const inner = `${tabs(mId(m), m)}${rail(m)}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow"><a href="#p-year">‹ Year</a> · Month ${p2(m)} / 12</div>
-      <h1 class="h1">${MONTHS[m - 1]}</h1></div>
-      <div class="pmeta">INTENTION ____________<br>FOCUS ____________</div></div>
+      <h1 class="h1">${MONTHS[m - 1]}</h1></div></div>
     <div class="hr white spaced"></div>
     <div class="cal">${cal}</div>
+    <div class="m-single"><div class="lbl">Intention</div><div class="ln"></div></div>
+    <div class="m-single"><div class="lbl">Focus</div><div class="ln"></div></div>
     <div class="m-foot">
       <div class="m-col"><div class="lbl">This month I want to feel</div><div class="lines"></div></div>
       <div class="m-col"><div class="lbl">Small joys</div><div class="lines"></div></div>
@@ -177,6 +178,7 @@ function dailyPage(m, d) {
     <div class="nf"><div class="k">Lunch</div></div>
     <div class="nf"><div class="k">Dinner</div></div>
     <div class="nf"><div class="k">Snack</div></div>
+    <div class="nf nf-total"><div class="k">Total</div></div>
     <div class="lbl" style="margin-top:20px">Today's act of self-care</div><div class="box" style="height:76px"></div>
     <div class="lbl" style="margin-top:16px;color:var(--grat-c)">Grateful for</div>
     <div class="box" style="flex:1;min-height:96px;border-color:var(--grat-line);background:var(--grat-fill)"></div></div>`;
@@ -192,16 +194,17 @@ function habitsPage(m) {
   let head = '<div class="hb-row"><div class="hb-name head">Habit</div><div class="hb-days">';
   for (let d = 1; d <= 31; d++) head += `<div class="hb-c">${d}</div>`;
   head += '</div></div>';
-  const rows = habits.map((name, r) => {
-    let row = `<div class="hb-row"><div class="hb-name">${name}</div><div class="hb-days">`;
-    for (let d = 1; d <= 31; d++) row += `<div class="hb-c"><div class="o"></div></div>`;
-    return row + '</div></div>';
-  }).join('');
+  const dots = () => { let s = ''; for (let d = 1; d <= 31; d++) s += `<div class="hb-c"><div class="o"></div></div>`; return s; };
+  const rows = habits.map((name) =>
+    `<div class="hb-row"><div class="hb-name">${name}</div><div class="hb-days">${dots()}</div></div>`).join('');
+  // 5 blank rows for the buyer's own habits
+  const blankRows = Array.from({ length: 5 }, () =>
+    `<div class="hb-row"><div class="hb-name hb-blank"></div><div class="hb-days">${dots()}</div></div>`).join('');
   const inner = `${tabs(hId(m), m)}${rail(m)}<div class="content">${SEAL}
     <div class="phead"><div><div class="eyebrow">Habits · ${MONTHS[m - 1]}</div><h1 class="h1">Gentle <em>habits</em></h1></div>
       <div class="pmeta">PROGRESS,<br>NOT PERFECTION</div></div>
     <div class="hr white spaced"></div>
-    <div class="hb">${head}${rows}</div>
+    <div class="hb">${head}${rows}${blankRows}</div>
     <div class="sec" style="margin-top:24px">Notes on this month</div><div class="hb-fill"></div></div>`;
   return page(hId(m), inner);
 }

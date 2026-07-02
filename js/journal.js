@@ -72,11 +72,13 @@
   var habits=['Move my body','Drink water','Time outside','Read','Sleep by 11','No-phone hour','Be kind to myself'];
   var head='<div class="hb-row"><div class="hb-name head">Habit</div><div class="hb-days">';
   for(var d=1;d<=31;d++)head+='<div class="hb-c">'+d+'</div>';head+='</div></div>';
+  function dots(){var s='';for(var d=1;d<=31;d++){s+='<div class="hb-c"><div class="o"></div></div>';}return s;}
   var rows=head;
-  habits.forEach(function(name,r){
-    var row='<div class="hb-row"><div class="hb-name">'+name+'</div><div class="hb-days">';
-    for(var d=1;d<=31;d++){row+='<div class="hb-c"><div class="o"></div></div>';}
-    row+='</div></div>';rows+=row;
+  habits.forEach(function(name){
+    rows+='<div class="hb-row"><div class="hb-name">'+name+'</div><div class="hb-days">'+dots()+'</div></div>';
   });
+  for(var i=0;i<5;i++){
+    rows+='<div class="hb-row"><div class="hb-name hb-blank"></div><div class="hb-days">'+dots()+'</div></div>';
+  }
   hb.innerHTML=rows;
 })();

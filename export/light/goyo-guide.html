@@ -219,9 +219,11 @@ a.dnum:hover,.dsub a:hover{color:var(--accent);}
 .cal .cell{height:140px;padding:11px 12px;font-size:14px;color:var(--muted);
   border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);}
 .cal .cell.dim{color:var(--faint);opacity:.4;}
-.m-single{margin-top:18px;display:flex;align-items:baseline;gap:16px;}
+.m-single{margin-top:10px;display:flex;align-items:baseline;gap:16px;}
 .m-single .lbl{flex:none;}
 .m-single .ln{flex:1;height:1px;background:var(--hair);}
+.cal + .m-single{margin-top:32px;}      /* Intention: separates from the calendar above */
+.m-single + .m-single{margin-bottom:32px;}  /* Focus: separates from the section below */
 .m-foot{margin-top:22px;flex:1;display:grid;grid-template-columns:1.7fr 1fr;gap:var(--gap);}
 .m-col{display:flex;flex-direction:column;}
 .m-col .lbl{margin-bottom:14px;}

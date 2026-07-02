@@ -25,6 +25,9 @@
   --grat-c:var(--accent2);
   --grat-line:var(--accent2-line);
   --grat-fill:var(--accent2-fill);
+  /* month rail — active month background; defaults to --surface, themes
+     may soften it independently (e.g. light uses a pale pink, not white) */
+  --rail-on-bg:var(--surface);
 
   /* ---- type ------------------------------------------------------------- */
   --serif:'Bodoni Moda',Georgia,serif;  /* display only      */

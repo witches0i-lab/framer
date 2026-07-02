@@ -10,6 +10,8 @@
   --accent2:#6cc3d4; --accent2-line:rgba(120,200,216,.45); --accent2-fill:rgba(198,250,255,.30);
   /* "Grateful for" box: kept tone-on-tone pink instead of the cyan secondary */
   --grat-c:#c97a9e; --grat-line:rgba(228,147,181,.40); --grat-fill:rgba(255,213,232,.28);
+  /* month rail active bg: pure white stood out too much — soften to pale pink */
+  --rail-on-bg:#fbe4ee;
 }
 
 /* seal: recolour najeon's celadon→pink, pink→cyan (CSS beats the SVG fill attr) */

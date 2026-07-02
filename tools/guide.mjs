@@ -3,7 +3,7 @@
    Produces an on-brand quick-start guide that ships alongside the
    planner: welcome, how the hyperlinks work, importing to
    GoodNotes/Notability, reusing pages, and care tips.
-   Output: export/guide/goyo-guide.html  (render → PDF via pdf.mjs)
+   Output: export/<theme>/goyo-guide.html  (render → goyo-guide-<theme>.pdf via pdf.mjs)
    Dependency-free (Node built-ins only).
 
      node tools/guide.mjs        # or: npm run guide
@@ -18,8 +18,6 @@ const read = (p) => readFileSync(join(root, p), 'utf8');
 const fontFace = read('assets/fonts/fonts.css');
 const tokens = read('css/tokens.css');
 const base   = read('css/base.css');
-const html   = read('index.html');
-const fonts  = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
 /* same layout/anchors/text everywhere — only the colourway tokens change.
    najeon ('') is the GOYO base; light/hanji are overrides. */
 const themes = { najeon: '', light: read('themes/light.css'), hanji: read('themes/hanji.css') };
@@ -159,10 +157,12 @@ body{display:block;}
 const body = pages.join('\n');
 for (const [theme, themeCss] of Object.entries(themes)) {
   const css = [fontFace, tokens, themeCss, base, guideCss].filter(Boolean).join('\n');
+  // No Google Fonts <link> here on purpose: fontFace already embeds Bodoni Moda +
+  // Inter as base64, and an external stylesheet link can make Chrome's print
+  // pipeline hang waiting on network in offline/sandboxed render environments.
   const out = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GOYO — User guide (${theme})</title>
-${fonts}
 <style>${css}</style></head><body>
 ${body}
 </body></html>
@@ -171,4 +171,4 @@ ${body}
   writeFileSync(join(root, 'export', theme, 'goyo-guide.html'), out);
 }
 console.log(`Built user guide (${pages.length} pages × ${Object.keys(themes).length} themes) → export/<theme>/goyo-guide.html`);
-console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo-guide.pdf`);
+console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo-guide-<theme>.pdf`);

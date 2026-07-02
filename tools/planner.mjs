@@ -30,7 +30,6 @@ const medallion = read('js/medallion.js');
 const html      = read('index.html');
 
 const themes = { najeon: '', light: read('themes/light.css'), hanji: read('themes/hanji.css') };
-const fonts = (html.match(/<link[^>]*fonts[^>]*>/g) || []).join('\n');
 /* lift the procedural cover markup straight from the design sample */
 const coverInner = sliceClass(html, 'cover');
 
@@ -263,10 +262,13 @@ body{display:block;}
 `;
 function doc(title, themeCss, body, { med = medallion } = {}) {
   const css = [fontFace, tokens, base, themeCss, printCss].filter(Boolean).join('\n');
+  // No Google Fonts <link> here on purpose: fontFace already embeds Bodoni Moda +
+  // Inter as base64, and an external stylesheet link can make Chrome's print
+  // pipeline hang waiting on network (fonts.googleapis.com) in offline/sandboxed
+  // render environments.
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-${fonts}
 <style>${css}</style></head>
 <body>
 ${body}
@@ -293,8 +295,8 @@ writeFileSync(join(root, 'planner.html'),
 /* contact sheet */
 const sheet = Object.keys(themes).map((t) =>
   `<section><h2>${t}</h2><ul><li><a href="${t}/goyo-print.html">Combined HTML (print → PDF)</a></li>`
-  + `<li><a href="${t}/goyo.pdf">goyo.pdf (planner)</a></li>`
-  + `<li><a href="${t}/goyo-guide.pdf">goyo-guide.pdf</a></li></ul></section>`).join('\n');
+  + `<li><a href="${t}/goyo-${t}.pdf">goyo-${t}.pdf (planner)</a></li>`
+  + `<li><a href="${t}/goyo-guide-${t}.pdf">goyo-guide-${t}.pdf</a></li></ul></section>`).join('\n');
 writeFileSync(join(outRoot, 'index.html'), `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>GOYO — exports</title><style>
 body{font:14px/1.6 system-ui,sans-serif;background:#14181a;color:#e9e6df;margin:0;padding:40px;}
@@ -307,4 +309,4 @@ ${sheet}</body></html>`);
 
 const days = pages.filter((p) => /id="p-d/.test(p)).length;
 console.log(`Built ${pages.length} pages (undated, ${days} days) → export/<theme>/goyo-print.html + planner.html`);
-console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo.pdf (internal links preserved)`);
+console.log(`Next: node tools/pdf.mjs   → export/<theme>/goyo-<theme>.pdf (internal links preserved)`);

@@ -11,8 +11,9 @@ najeon pink (secondary) on dark ink, with a procedural najeon medallion on the c
 The runtime journal is a **plain static site** — no framework, no dependencies. A tiny
 dependency-free **build** (Node built-ins only) generates the sellable product.
 
-**The Etsy product is two files per colourway:** the **planner** (`goyo.pdf` — a full hyperlinked
-year) and the **user guide** (`goyo-guide.pdf`). Both are generated for each theme
+**The Etsy product is two files per colourway:** the **planner** (`goyo-<theme>.pdf` — a full
+hyperlinked year) and the **user guide** (`goyo-guide-<theme>.pdf`) — e.g. `goyo-najeon.pdf` +
+`goyo-guide-najeon.pdf`. Named per-theme so the files never get mixed up. Both are generated for each theme
 (najeon / light / hanji) into `export/<theme>/`. **najeon is the GOYO base**; light & hanji change
 only the colourway tokens — layout, anchors and text positions are identical across all three.
 
@@ -22,7 +23,7 @@ python3 -m http.server 5173      # or: npm run dev  → http://localhost:5173
 # index.html  = 7-page design sample (the archetypes)
 # planner.html = generated full-year planner (394 pages), live preview (najeon base)
 
-npm run build   # planner.mjs + guide.mjs + pdf.mjs → export/<theme>/goyo.pdf + export/guide/goyo-guide.pdf
+npm run build   # planner.mjs + guide.mjs + pdf.mjs → export/<theme>/goyo-<theme>.pdf + goyo-guide-<theme>.pdf
 ```
 Every `.page` is `1080 × 1440` (portrait, tablet-friendly for GoodNotes).
 
@@ -42,7 +43,7 @@ tools/planner.mjs PRODUCT build: full year → cover, year, 12 months, 365 days,
 tools/guide.mjs   user-guide build, one per theme (same layout, colourway only) → export/<theme>/goyo-guide.html
 tools/pdf.mjs     render every goyo-print.html + the guide → PDF (internal links preserved)
 docs/link-test.md GoodNotes / Notability hyperlink test checklist
-export/           generated output (regenerate via `npm run build`; large goyo.pdf is gitignored)
+export/           generated output (regenerate via `npm run build`; large goyo-<theme>.pdf is gitignored)
 ```
 
 ## Design system rules (important)
@@ -73,7 +74,7 @@ Don't hand-edit the generated nodes. The dark colourway is fixed for the cover; 
    render to PDF preserving internal links, and a GoodNotes link-test checklist.~~ ✅ Each `.page`
    has `id="p-<slug>"`; tabs/rail/index are `<a href="#p-…">`. `npm run export` emits a combined
    `goyo-print.html` per theme; `npm run pdf` drives a pre-installed Chromium to render
-   `goyo.pdf` with internal links preserved (~113 link annots / 7 pages). Per-page export files
+   `goyo-<theme>.pdf` with internal links preserved (~113 link annots / 7 pages). Per-page export files
    rewrite anchors to sibling `.html`. Test with `docs/link-test.md`. Rail → single Monthly page
    until roadmap 4 adds 12 monthlies.
 4. ~~New pages: weekly reflection, year-at-a-glance, gratitude log.~~ ✅ Plus the big scale-up:

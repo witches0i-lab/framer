@@ -5,8 +5,8 @@ Build everything first:
 
 ```bash
 npm run build       # planner + guide + PDFs for every theme
-# → export/<theme>/goyo.pdf       (planner, ~405 undated pages)
-# → export/<theme>/goyo-guide.pdf (user guide)
+# → export/<theme>/goyo-<theme>.pdf       (planner, ~405 undated pages)
+# → export/<theme>/goyo-guide-<theme>.pdf (user guide)
 ```
 
 `npm run pdf` drives a pre-installed Chromium; if none is found it prints a
@@ -29,12 +29,12 @@ Expected count in a built planner PDF: **~18,800 link annotations** across
 **405 pages**. Quick sanity check without opening a reader:
 
 ```bash
-node -e "const d=require('fs').readFileSync('export/najeon/goyo.pdf');\
+node -e "const d=require('fs').readFileSync('export/najeon/goyo-najeon.pdf');\
 console.log('links:',(d.toString('latin1').match(/\/Subtype\s*\/Link/g)||[]).length)"
 ```
 
 ## In GoodNotes (iPad) — the real test
-1. Import `goyo.pdf` as a document (not as an image), in **reading/hand** mode.
+1. Import `goyo-<theme>.pdf` (e.g. `goyo-najeon.pdf`) as a document (not as an image), in **reading/hand** mode.
 2. Tap each **top tab** → lands on the matching section; on a month's day/monthly/
    habits/notes page, **Habits** and **Notes** open *that* month's pages.
 3. Tap any **month** on the rail → lands on that monthly page.
@@ -57,4 +57,5 @@ console.log('links:',(d.toString('latin1').match(/\/Subtype\s*\/Link/g)||[]).len
 ## Per edition
 Three colourways, two files each — najeon is the base; light & hanji change only
 the colourway tokens (layout, anchors and text positions are identical):
-`export/najeon/`, `export/light/`, `export/hanji/` → `goyo.pdf` + `goyo-guide.pdf`.
+`export/najeon/`, `export/light/`, `export/hanji/` → `goyo-<theme>.pdf` + `goyo-guide-<theme>.pdf`
+(e.g. `goyo-najeon.pdf`, `goyo-guide-najeon.pdf`).

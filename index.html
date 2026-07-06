@@ -101,20 +101,31 @@
     <div class="dsub"><a class="mo" href="#p-monthly" style="text-decoration:none">January</a></div>
     <div class="dwk"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
 
-    <!-- morning : intention -->
-    <div class="sec dph">Morning · Intention</div>
-    <div class="m-single" style="margin-top:20px"><div class="lbl">Today, one thing</div><div class="ln"></div></div>
-
-    <!-- day : the pages are the hero -->
-    <div class="sec dph">Day · Pages</div>
-    <div class="journal dj"></div>
-
-    <!-- night : quiet check-in, one strip -->
-    <div class="dtrack">
-      <div class="dt"><span class="k">Mood</span><div class="moods" id="moods"></div></div>
-      <div class="dt"><span class="k">Sleep</span><span class="hrs">hrs slept</span></div>
-      <div class="dt"><span class="k">Water</span><span class="cups" id="cups"></span></div>
+    <div class="dcols">
+      <div class="dcol-l">
+        <div class="sec dph">Morning · Intention</div>
+        <div class="lbl" style="margin-top:16px">Today's affirmation</div>
+        <div class="box" style="height:88px"></div>
+        <div class="lbl" style="margin-top:18px">Today's weather</div>
+        <div class="wxr">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.5 5.5l1.4 1.4M17 17l1.5 1.5M18.5 5.5L17 7M7 17l-1.5 1.5" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 18a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 18H7z" stroke-linejoin="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><path d="M7 15a4 4 0 010-8 5 5 0 019.6-1.5A3.5 3.5 0 0117 15H7z" stroke-linejoin="round"/><path d="M8 18l-1 2M12 18l-1 2M16 18l-1 2" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.3"><circle cx="8" cy="8" r="3"/><path d="M11 17a3.5 3.5 0 01.5-7 4.3 4.3 0 018.2 1.3A3 3 0 0119 17h-8z" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="sec dph">Well-being</div>
+        <div class="row"><div class="k">Mood</div><div class="v"><div class="moods" id="moods"></div></div></div>
+        <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i style="height:9px"></i><i style="height:13px"></i><i style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
+        <div class="row"><div class="k">Sleep</div><div class="v"><span class="hrs">hrs slept</span></div></div>
+        <div class="row"><div class="k">Water</div><div class="v" id="cups"></div></div>
+      </div>
+      <div class="dcol-r">
+        <div class="sec dph">Day · Pages</div>
+        <div class="journal dj"></div>
+      </div>
     </div>
+
+    <!-- night : quiet close -->
     <div class="sec dph" style="color:var(--grat-c);border-color:var(--grat-line)">Night · Grateful for</div>
     <div class="gr3"><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
   </div>

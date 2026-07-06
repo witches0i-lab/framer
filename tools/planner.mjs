@@ -165,26 +165,27 @@ function dailyPage(m, d) {
   let cups = '';
   for (let i = 0; i < 7; i++) cups += CUP_SVG;
   const left = `<div class="dcol-l">
-    <div class="lbl">Today's affirmation</div><div class="box" style="height:92px"></div>
+    <div class="sec dph">Morning · Intention</div>
+    <div class="lbl" style="margin-top:16px">Today's affirmation</div><div class="box" style="height:200px"></div>
     <div class="lbl" style="margin-top:18px">Today's weather</div>${wx}
-    <div class="sec">Overall well-being</div>
+    <div class="sec dph dph-lg">Well-being</div>
     <div class="row"><div class="k">Mood</div><div class="v"><div class="moods">${moodFaces()}</div></div></div>
     <div class="row"><div class="k">Energy</div><div class="v"><div class="ebar"><i style="height:9px"></i><i style="height:13px"></i><i style="height:17px"></i><i style="height:21px"></i><i style="height:24px"></i></div></div></div>
     <div class="row"><div class="k">Sleep</div><div class="v"><span class="hrs">hrs slept</span></div></div>
     <div class="row"><div class="k">Water</div><div class="v">${cups}</div></div>
-    <div class="sec">Nutrition check</div>
+    <div class="sec dph dph-lg">Nutrition check</div>
     <div class="nf"><div class="k">Breakfast</div></div>
     <div class="nf"><div class="k">Lunch</div></div>
     <div class="nf"><div class="k">Dinner</div></div>
     <div class="nf"><div class="k">Snack</div></div>
-    <div class="nf nf-total"><div class="k">Total</div></div>
-    <div class="lbl" style="margin-top:20px">Today's act of self-care</div><div class="box" style="height:76px"></div>
-    <div class="lbl" style="margin-top:16px;color:var(--grat-c)">Grateful for</div>
-    <div class="box" style="flex:1;min-height:96px;border-color:var(--grat-line);background:var(--grat-fill)"></div></div>`;
+    <div class="nf nf-total"><div class="k">Total</div></div></div>`;
   const inner = `${tabs('', m)}${rail(m)}<div class="content">
     <div class="dtop"><a class="dnum" href="#${mId(m)}">${p2(d)}</a><div class="dstrip">${strip}</div></div>
     <div class="dsub"><a class="mo" href="#${mId(m)}" style="text-decoration:none">${MONTHS[m - 1]}</a></div>
-    <div class="dcols">${left}<div class="dcol-r"><div class="journal"></div></div></div></div>`;
+    <div class="dwk"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    <div class="dcols">${left}<div class="dcol-r"><div class="journal dj"></div></div></div>
+    <div class="sec dph" style="color:var(--grat-c);border-color:var(--grat-line)">Night · Grateful for</div>
+    <div class="gr3"><div class="ln"></div><div class="ln"></div><div class="ln"></div></div></div>`;
   return page(dId(m, d), inner);
 }
 

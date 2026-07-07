@@ -79,7 +79,7 @@ const getSetUp = gpage('Get set up', 'Importing your journal',
   + `<div class="g-sub">Notability</div>
    <p class="g-body">Share → <b>Open in Notability</b>, or import from the Notability library.
    Internal links work the same way.</p>`,
-  'Undated by design — no year, no weekdays. Write the dates that suit you, and reuse the journal every year.');
+  'Undated by design — no fixed year, so you start any day and reuse it every January. Write in the dates (and mark the weekday) that suit you.');
 
 const makeItYours = gpage('Make it yours', 'Reuse &amp; rearrange',
   `<div class="g-sub">Duplicate a page (e.g. extra daily or notes)</div>`

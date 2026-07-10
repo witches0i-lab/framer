@@ -48,6 +48,14 @@ const COVER = {
             pineB64: read('themes/cover/light.pine.b64') },
 };
 const coverPack = (theme) => COVER[theme] || COVER.najeon;
+
+/* hanji swaps the whole medallion for a raster changho PNG via .med-swap.
+   themes/hanji.css points at assets/goyo-cover-hanji.png (a relative file
+   URL that won't resolve from export/<theme>/); for the print/PDF build we
+   inline it as a base64 data URL so Chrome renders it offline. */
+const coverSwapCss = {
+  hanji: `.med-swap{background-image:url(data:image/png;base64,${read('themes/cover/hanji.cover.b64').trim()})!important;}`,
+};
 const coverFor = (theme) => {
   let inner = coverInner.replace(/<defs>[\s\S]*?<\/defs>/, coverPack(theme).defs);
   const pine = coverPack(theme).pineB64;
@@ -285,9 +293,10 @@ let pages;   // keep a reference for the page count log
 for (const [theme, themeCss] of Object.entries(themes)) {
   pages = buildPages(theme);
   const body = pages.join('\n');
+  const css = [themeCss, coverSwapCss[theme]].filter(Boolean).join('\n');
   mkdirSync(join(outRoot, theme), { recursive: true });
   writeFileSync(join(outRoot, theme, 'goyo-print.html'),
-    doc(`GOYO — ${theme}`, themeCss, body, { med: coverPack(theme).med }));
+    doc(`GOYO — ${theme}`, css, body, { med: coverPack(theme).med }));
 }
 /* live preview (najeon base, no theme switcher) */
 writeFileSync(join(root, 'planner.html'),

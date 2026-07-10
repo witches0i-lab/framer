@@ -12,7 +12,7 @@
   /* "Grateful for" box: tone-on-tone warm wood, not the sage secondary */
   --grat-c:#9a7440; --grat-line:rgba(169,121,63,.38); --grat-fill:rgba(236,223,194,.45);
   /* month rail active bg: warm amber tint, clearly visible on the pale paper */
-  --rail-on-bg:#e7d3a2;
+  --rail-on-bg:#eddfba;
 }
 
 /* seal: najeon's celadon->wood, pink->sage (CSS beats the SVG fill attr) */

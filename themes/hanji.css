@@ -19,6 +19,18 @@
 .seal svg ellipse:nth-of-type(1){fill:var(--accent);}
 .seal svg ellipse:nth-of-type(2){fill:var(--accent2);}
 
+/* green points — najeon leans on celadon; hanji's wood is primary, so echo
+   the greenery (sage secondary) on recurring accents to keep pages alive:
+   the italic serif display words, the daily month, and the water/energy
+   trackers. Wood stays the dominant accent (tabs, rail, section rules). */
+.h1 em{color:var(--accent2);}
+.dsub .mo{color:var(--accent2);}
+.cup .glass{stroke:var(--accent2);}
+.cup .water{fill:var(--accent2);}
+.ebar i.on{background:var(--accent2);}
+.grat a.gr:hover .gr-mo{color:var(--accent2);}
+.ycard:hover{border-color:var(--accent2);}
+
 /* cover — warm paper ground, amber glow, changho medallion swapped in */
 .cover{background:radial-gradient(120% 82% at 46% 28%,#f5edd9 0%,#ece0c3 58%,#e2d3b0 100%);}
 .med-glow{background:radial-gradient(circle,rgba(212,168,102,.22),rgba(138,154,120,.06) 46%,transparent 70%);}

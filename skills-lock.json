@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "framer-code-components-overrides": {
+      "source": "fredm00n/framerlabs",
+      "sourceType": "github",
+      "skillPath": "skills/framer-code-components-overrides/SKILL.md",
+      "computedHash": "d213cd4bf4813cd0a8d1fc5dbeb16fa5e0fd799900f79cefa70cb9f588a783ac"
+    },
+    "framer-plugins": {
+      "source": "fredm00n/framerlabs",
+      "sourceType": "github",
+      "skillPath": "skills/framer-plugins/SKILL.md",
+      "computedHash": "e42a8b4324109f7aabf3585fe6195044b55ba8c2f34ee0fff45e0048684b0496"
+    }
+  }
+}
